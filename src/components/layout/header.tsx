@@ -26,13 +26,16 @@ const NAVLINKS = [
         url: "/leaderboard",
         icon: Trophy,
     },
+  
 ];
 
 export default function Header() {
     const [_, logoutAction] = useActionState(logout, undefined);
     const pathName = usePathname();
     return (
-        <header className="max-w-container flex items-center justify-between gap-4 border-b">
+    <header className="bg-black/10 sticky top-0 z-50 backdrop-blur-sm">
+      
+        <div className=" max-w-container flex items-center justify-between gap-4 border-b">
             <Link href="/">Logo</Link>
             <div className="flex items-center">
                 {NAVLINKS.map(({ label, url, icon: Icon }, index) => (
@@ -89,6 +92,7 @@ export default function Header() {
                     </PopoverContent>
                 </Popover>
             </div>
-        </header>
+        </div>
+    </header>
     );
 }

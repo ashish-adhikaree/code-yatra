@@ -70,7 +70,7 @@ export default async function Home() {
 
                     <div className="grid lg:grid-cols-3 gap-4 lg:gap-10 mt-10">
                     {/* Cards */}
-                        <div className="col-span-2">
+                        <div className=" h-[200vh] col-span-2">
                             {
                                 events.map((currentElement,index)=>(
                                     <Card key={index} className="w-full flex flex-col px-5">

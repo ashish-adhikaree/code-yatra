@@ -28,3 +28,18 @@ export type CreateOrganizationState =
           generalErrorMessage?: string;
       }
     | undefined;
+
+
+ export type EditProfileState =
+    | {
+          success?: boolean;
+          errors?: {
+              fullname?: string[];
+              latitude?:number;
+              longitude?:number;
+              bio?:string|null;
+              radius_in_km:number;
+          };
+          generalErrorMessage?: string;
+      }
+    | undefined;
