@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
     return (
-        <main className="max-w-sm mx-auto py-10 lg:py-20">
+        <main className="w-full max-w-lg">
             <LoginForm />
         </main>
     );

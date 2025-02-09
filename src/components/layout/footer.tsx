@@ -1,3 +1,7 @@
 export default function Footer(){
-    return <footer>Footer</footer>
+    return <footer>
+        <div className="max-w-container border-t">
+            
+        </div>
+    </footer>
 }

@@ -23,6 +23,7 @@ export async function signup(state: AuthFormState, formData: FormData) {
         }
         const supabase = await createClient();
         const { error } = await supabase.auth.signUp(validatedFields.data);
+
         if (error !== null) {
             throw new Error(error.message);
         }

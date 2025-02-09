@@ -23,7 +23,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${inter.className} antialiased h-screen dark`}>
-                <div className="w-full max-w-5xl mx-auto  px-2">{children}</div>
+                <div className="w-full">{children}</div>
             </body>
         </html>
     );

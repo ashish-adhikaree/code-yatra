@@ -63,4 +63,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  .max-w-container{
+    @apply max-w-7xl mx-auto px-4;
+  }
 }
+
