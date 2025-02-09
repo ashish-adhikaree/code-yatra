@@ -3,6 +3,7 @@
 import { CreateOrganizationState } from "@/lib/interface";
 import { createClient } from "@/lib/utils/supabase/server";
 import { CreateOrganizationSchema } from "@/lib/zod-schemas/organization";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createOrganization(state: CreateOrganizationState, formData: FormData) {
@@ -45,6 +46,7 @@ export async function createOrganization(state: CreateOrganizationState, formDat
         };
     }
 }
+
 export async function updateOrganization(
     state: CreateOrganizationState,
     formData: FormData
@@ -73,28 +75,16 @@ export async function updateOrganization(
 
         if (!user) return redirect("/login");
 
-        const type = formData.get("type");
-        if (type == "edit") {
-            const { error } = await supabase
-                .from("organizations_profiles")
-                .update({
-                    title: validatedFields.data.title,
-                    ...(validatedFields.data.description ? { description: validatedFields.data.description } : {}),
-                })
-                .eq("id", parseInt(formData.get("id") as string));
-
-            if (error) {
-                throw error;
-            }
-        } else {
-            const { error } = await supabase.from("organizations_profiles").insert({
+        const { error } = await supabase
+            .from("organizations_profiles")
+            .update({
                 title: validatedFields.data.title,
                 ...(validatedFields.data.description ? { description: validatedFields.data.description } : {}),
-            });
+            })
+            .eq("id", parseInt(formData.get("id") as string));
 
-            if (error) {
-                throw error;
-            }
+        if (error) {
+            throw error;
         }
 
         return {
@@ -106,5 +96,19 @@ export async function updateOrganization(
             generalErrorMessage: err.message || "Something went wrong. Please try again.",
             payload: formData,
         };
+    }
+}
+
+export async function deleteOrganization(id: number) {
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase.from("organizations_profiles").delete().eq("id", id);
+        if (error) {
+            throw error;
+        }
+        revalidatePath("/", "layout");
+        redirect("/organizations");
+    } catch (err) {
+        console.log(err);
     }
 }

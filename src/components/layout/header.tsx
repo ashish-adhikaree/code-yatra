@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Building, House, LogOut, SquareChartGantt, Trophy, UserRound } from "lucide-react";
+import { Building, House, LogOut, Trophy, UserRound } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { useActionState } from "react";
 import { logout } from "@/app/(not-authenticated)/login/actions";
 import { usePathname } from "next/navigation";
+import Logo from "../shared/logo";
+import { type User } from "@supabase/supabase-js";
 
 const NAVLINKS = [
     {
@@ -29,13 +31,11 @@ const NAVLINKS = [
   
 ];
 
-export default function Header() {
+export default function Header({ user }: { user: User | null }) {
     const [_, logoutAction] = useActionState(logout, undefined);
     const pathName = usePathname();
     return (
-    <header className="bg-black/10 sticky top-0 z-50 backdrop-blur-sm">
-      
-        <div className=" max-w-container flex items-center justify-between gap-4 border-b">
+        <header className="max-w-container flex items-center justify-between gap-4 border-b">
             <Link href="/">Logo</Link>
             <div className="flex items-center">
                 {NAVLINKS.map(({ label, url, icon: Icon }, index) => (
@@ -92,7 +92,6 @@ export default function Header() {
                     </PopoverContent>
                 </Popover>
             </div>
-        </div>
-    </header>
+        </header>
     );
 }

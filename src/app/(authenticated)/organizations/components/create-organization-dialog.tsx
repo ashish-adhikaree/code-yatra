@@ -87,7 +87,6 @@ export default function CreateOrganizationDialog({
                             </div>
                             {organization ? (
                                 <>
-                                    <input name="type" value="edit" type="hidden"></input>
                                     <input name="id" value={organization.id} type="hidden"></input>
                                 </>
                             ) : null}

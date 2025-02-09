@@ -1,72 +1,70 @@
-
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
+import ErrorBanner from "@/components/shared/error-banner";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { createClient } from "@/lib/utils/supabase/server";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { ArrowRight } from "lucide-react";
-
-
-
+import { ArrowRight, MapPin } from "lucide-react";
+import { format } from "date-fns";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { Suspense } from "react";
+import Leaderboard from "./components/leaderboard";
 
 export default async function Home() {
-
-  
-    
     const supabase = await createClient();
-        const { data:events,error:event_error} = await supabase
-        .from('events')
-        .select('*')  
+    const { data: events, error: event_error } = await supabase.from("events").select("*");
 
-    const {data:users_profiles,error:user_error}= await supabase
-        .from("user_profiles")
-        .select("*")
-        .order('total_volunteering_points', { ascending: false })
-        .limit(4);
+    if (event_error) {
+        return <ErrorBanner type="error">Couldn&apos;t fetch events.</ErrorBanner>;
+    }
 
-        if(event_error){
-            <div>
-                <p>Something went wrong!</p>
-            </div>
-        }
-        if(user_error){
-            <div>
-                <p>Something went wrong!</p>
-            </div>
-        }
-        if(users_profiles===null){
-            <p>Something went wrong</p>
-        }
-        if(events === null){
-            <div>
-                <p>Something went wrong!</p>
-            </div>
-        }
+    if (!events || events.length == 0) {
+        return <ErrorBanner type="warning">No events found.</ErrorBanner>;
+    }
+
     return (
-        <section>
-            <div className="container mx-auto">
-                <div className="flex flex-col">
+        <div className="max-w-container">
+            <div>
+                <div className="">
+                    <h4 className="text-xl font-medium">Welcome Back!</h4>
+                    <h6 className="text-muted-foreground">Here are the list of the upcoming events</h6>
+                </div>
 
-                    {/* Header Bar */}
-                    <div className = "flex flex-row justify-between items-center">
-
-                        <div className="flex flex-col justify-start items-start gap-4">
-                            <h4 className="text-2xl lg:text-5xl font-semibold">Welcome Back,User</h4>
-                            <h6 className="text-white/50">Here are the list of the upcoming events</h6>
-                        </div>
-                        {/* Notification Icon */}
-                        <div className="">
-                            {/* Notification Icon */}
-
-                        </div>
+                <div className="grid lg:grid-cols-3 gap-4 lg:gap-10 mt-10 ">
+                    <div className="col-span-2 space-y-4">
+                        {events.map((event, index) => (
+                            <article
+                                key={index}
+                                className="w-full bg-muted/40 p-4 rounded-md border border-foreground/10 space-y-4"
+                            >
+                                <div>
+                                    <p className="text-muted-foreground text-sm">
+                                        {format(event.start_date, "do MMM yyyy, hh:mm b")} to{" "}
+                                        {format(event.start_date, "do MMM yyyy, hh:mm b")}
+                                    </p>
+                                    <h5 className="text-lg font-medium">{event.title}</h5>
+                                </div>
+                                <p className="text-sm text-muted-foreground">{event.description}</p>
+                                <div className="flex justify-between items-start">
+                                    <div className="flex items-center gap-2 text-muted-foreground w-fit">
+                                        <MapPin className="h-6 w-6" />
+                                        <p className="text-sm">
+                                            {event.location.slice(0, 50)}
+                                            {event.location.length > 50 ? "..." : ""}
+                                        </p>
+                                    </div>
+                                    <Link
+                                        href={`/organizations/${event.organization_id}/events/${event.id}`}
+                                        className={cn(buttonVariants(), "group")}
+                                    >
+                                        Apply{" "}
+                                        <ArrowRight className="group-hover:translate-x-1 transition-all ease-in-out duration-300" />
+                                    </Link>
+                                </div>
+                            </article>
+                        ))}
                     </div>
 
+<<<<<<< HEAD
 
                     <div className="grid lg:grid-cols-3 gap-4 lg:gap-10 mt-10">
                     {/* Cards */}
@@ -103,54 +101,17 @@ export default async function Home() {
 
                         </div>
 
+=======
+>>>>>>> 9cfc610b89cee5dd30b4ab167a812eeac99f1002
                     {/* LeaderBoards */}
 
-             
                     <div className="grid-cols-4">
-                            <Card className="py-10">
-                            {
-                                users_profiles.map((currentElement,index)=>(
-                        
-                                <div key={index} className="w-full flex flex-col justify-center items-center px-8 ">
-                                    <div className="w-full flex justify-start">
-                                <CardTitle className="text-lg">Leaderboards</CardTitle>
-                                    </div>
-
-                                    {/* After First Position */}
-                                    <div className="w-full flex flex-row justify-between items-center border-b-2 border-b-white/10 py-3">
-                                        <div className="flex flex-row justify-center items-center gap-5">
-                                        {/* Avatar */}
-                                        <div className="h-10 w-10 rounded-full">
-                                        <Avatar className="cursor-pointer ">
-                                            <AvatarImage className="h-full w-full object-cover" src="https://github.com/shadcn.png" alt="@shadcn" />
-                                            <AvatarFallback>CN</AvatarFallback>
-                                        </Avatar>
-
-                                        </div>
-                                            <div className="flex flex-col justify-start items-start">
-                                                <h5>{currentElement.fullname}</h5>
-                                                <p className="text-white/40">{currentElement.total_volunteering_points}</p>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <h4>{index+1}</h4>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                    ))
-                                }
-                            </Card>
-
-                        </div>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Leaderboard />
+                        </Suspense>
                     </div>
-
-
-
                 </div>
-
             </div>
-        </section>
+        </div>
     );
 }

@@ -2,8 +2,9 @@ import { Tables } from "@/lib/utils/supabase/types";
 import CreateOrganizationDialog from "./create-organization-dialog";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-function OrganizationStatus({ children }: { children: Tables<"organizations_profiles">["status"] }) {
+export function OrganizationStatus({ children }: { children: Tables<"organizations_profiles">["status"] }) {
     let className = "px-2 py-[2px] border rounded-md text-xs leading-none uppercase ";
 
     switch (children) {
@@ -42,8 +43,10 @@ export default function OrganizationCard({ organization }: { organization: Table
                     </Button>
                 </CreateOrganizationDialog>
             </div>
-            <h5 className="font-medium">{organization.title}</h5>
-            <p className="text-muted-foreground text-sm">{organization.description}</p>
+            <Link className="block" href={`/organizations/${organization.id}`}>
+                <h5 className="font-medium">{organization.title}</h5>
+                <p className="text-muted-foreground text-sm">{organization.description}</p>
+            </Link>
         </article>
     );
 }

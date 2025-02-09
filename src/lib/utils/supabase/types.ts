@@ -199,39 +199,39 @@ export type Database = {
       }
       events_categories: {
         Row: {
+          category_id: number
           created_at: string
           event_id: number
           id: number
-          organization_id: number
           updated_at: string
         }
         Insert: {
+          category_id: number
           created_at?: string
           event_id: number
           id?: number
-          organization_id: number
           updated_at?: string
         }
         Update: {
+          category_id?: number
           created_at?: string
           event_id?: number
           id?: number
-          organization_id?: number
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "events_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "volunteering_categories"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "events_categories_event_id_fkey"
             columns: ["event_id"]
             isOneToOne: false
             referencedRelation: "events"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "events_categories_organization_id_fkey"
-            columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations_profiles"
             referencedColumns: ["id"]
           },
         ]
