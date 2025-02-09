@@ -1,9 +1,3 @@
-
-
-const pages = () => {
-  return (
-    <div>Organization Pages</div>
-  )
+export default function Page() {
+  return <div>Organizations Page</div>;
 }
-
-export default pages

@@ -1,9 +1,3 @@
-
-
-const pages = () => {
-  return (
-    <div>Profile Pages</div>
-  )
+export default function Page() {
+  return <div>Profile Page</div>;
 }
-
-export default pages
