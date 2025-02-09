@@ -3,6 +3,8 @@ import { getOrganizationDetails } from "../page";
 import ErrorBanner from "@/components/shared/error-banner";
 import { createClient } from "@/lib/utils/supabase/server";
 import CreateEventForm from "./create-event-form";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
     title: "Create Event",
@@ -60,7 +62,16 @@ export default async function CreateEvent({ params }: { params: Promise<{ id: st
         );
     }
 
-    return <div className="max-w-container">
-        <CreateEventForm organization={organization} categories={categories} />
-    </div>;
+    return (
+        <div className="max-w-container max-w-5xl space-y-4">
+            <Link
+                className="flex items-center gap-2 text-sm hover:bg-muted pr-2 rounded-md w-fit transition-all ease-in-out"
+                href={`/organizations/${organization.id}`}  
+            >
+                <ArrowLeft className="h-6 w-6" />
+                <p>Back</p>
+            </Link>
+            <CreateEventForm organization={organization} categories={categories} />
+        </div>
+    );
 }

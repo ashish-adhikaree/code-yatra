@@ -28,3 +28,21 @@ export type CreateOrganizationState =
           generalErrorMessage?: string;
       }
     | undefined;
+
+export type CreateEventState =
+    | {
+          success?: boolean;
+          errors?: {
+              title?: string[];
+              description?: string[];
+              start_date?: string[];
+              end_date?: string[];
+              required_volunteers?: string[];
+              latitude?: string[];
+              longitude?: string[];
+              radius_in_km?: string[];
+              categories?: string[];
+          };
+          generalErrorMessage?: string;
+      }
+    | undefined;
