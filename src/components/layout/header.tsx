@@ -28,6 +28,7 @@ const NAVLINKS = [
         url: "/leaderboard",
         icon: Trophy,
     },
+  
 ];
 
 export default function Header({ user }: { user: User | null }) {
