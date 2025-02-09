@@ -13,6 +13,7 @@ export default async function AuthenticatedLayout({
         data: { user },
     } = await supabase.auth.getUser();
 
+
     if (user) {
         return (
             <div className="space-y-4">
