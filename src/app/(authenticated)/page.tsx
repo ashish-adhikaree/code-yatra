@@ -64,6 +64,45 @@ export default async function Home() {
                         ))}
                     </div>
 
+<<<<<<< HEAD
+
+                    <div className="grid lg:grid-cols-3 gap-4 lg:gap-10 mt-10">
+                    {/* Cards */}
+                        <div className=" h-[200vh] col-span-2">
+                            {
+                                events.map((currentElement,index)=>(
+                                    <Card key={index} className="w-full flex flex-col px-5">
+
+                                        <div className="flex flex-col justify-start items-start">
+                                        <CardHeader>
+                                            <CardTitle className='text-2xl'>{currentElement.title}</CardTitle>
+                                        </CardHeader>
+                                        
+                                        <CardContent>
+                                            <div className="flex flex-col justify-start items-start gap-2">
+                                                <p className="text-md"> {new Date(currentElement.start_date).toLocaleDateString("en-GB", {
+                                                    day: "2-digit",
+                                                    month: "long",
+                                                    year:"numeric",
+                                                })}</p>
+                                                <p className="text-md">{currentElement.location}</p>
+                                            </div>
+
+                                            <CardDescription className="text-sm text-white/50 pt-10">{currentElement.description}</CardDescription>
+                                        </CardContent>
+                                    </div>
+
+                                    <div className="flex justify-end items-start pb-10">
+                                    <Button className="p-6 text-lg">Apply <ArrowRight/></Button>
+                                    </div>
+                                </Card>
+                                ))
+                            }
+
+                        </div>
+
+=======
+>>>>>>> 9cfc610b89cee5dd30b4ab167a812eeac99f1002
                     {/* LeaderBoards */}
 
                     <div className="grid-cols-4">
