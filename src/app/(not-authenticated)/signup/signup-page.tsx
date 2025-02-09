@@ -12,7 +12,7 @@ export default function SignupForm() {
     const [state, signupAction] = useActionState(signup, undefined);
 
     return (
-        <Card className="overflow-y-auto border-none">
+        <Card className="overflow-y-auto border-none bg-transparent">
             <CardHeader>
                 <CardTitle>Signup</CardTitle>
                 <CardDescription>Enter your details and create an account.</CardDescription>

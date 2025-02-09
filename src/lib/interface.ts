@@ -5,6 +5,26 @@ export type AuthFormState =
               password?: string[];
               full_name?: string[];
           };
-          message?: string;
+          generalErrorMessage?: string;
+      }
+    | undefined;
+
+export type AddFullNameDialogState =
+    | {
+          errors?: {
+              fullname?: string[];
+          };
+          generalErrorMessage?: string;
+      }
+    | undefined;
+
+export type CreateOrganizationState =
+    | {
+          success?: boolean;
+          errors?: {
+              title?: string[];
+              description?: string[];
+          };
+          generalErrorMessage?: string;
       }
     | undefined;

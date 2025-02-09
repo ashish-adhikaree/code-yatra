@@ -24,7 +24,7 @@ export default async function AuthenticatedLayout({
     }
 
     return <div className="grid lg:grid-cols-2 min-h-screen">
-        <div className="w-full h-full">
+        <div className="w-full h-full hidden lg:block">
             <Image src={AuthPageImage} className="w-full h-full object-cover" alt="People Volunteering" width={1000} height={1000} />
         </div>
         <div className="flex items-center px-4 lg:px-8 h-full w-full">

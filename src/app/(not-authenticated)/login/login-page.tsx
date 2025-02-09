@@ -10,7 +10,7 @@ import { useActionState } from "react";
 export default function LoginForm() {
     const [state, loginAction] = useActionState(login, undefined);
     return (
-        <Card className="overflow-y-auto border-none w-full max-w-[400px]">
+        <Card className="overflow-y-auto border-none w-full max-w-[400px] bg-transparent">
             <CardHeader>
                 <CardTitle>Login</CardTitle>
                 <CardDescription>Enter your credentials and login to your account.</CardDescription>

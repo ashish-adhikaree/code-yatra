@@ -145,6 +145,7 @@ export type Database = {
           end_date: string
           id: number
           latitude: number
+          location: string
           longitude: number
           organization_id: number
           radius_in_km: number
@@ -160,6 +161,7 @@ export type Database = {
           end_date: string
           id?: number
           latitude: number
+          location: string
           longitude: number
           organization_id: number
           radius_in_km: number
@@ -175,6 +177,7 @@ export type Database = {
           end_date?: string
           id?: number
           latitude?: number
+          location?: string
           longitude?: number
           organization_id?: number
           radius_in_km?: number
@@ -277,21 +280,27 @@ export type Database = {
           created_at: string
           description: string | null
           id: number
+          status: Database["public"]["Enums"]["ORGANIZATION_STATUS"]
           title: string
+          total_events_organized: number
           updated_at: string
         }
         Insert: {
           created_at?: string
           description?: string | null
           id?: number
+          status?: Database["public"]["Enums"]["ORGANIZATION_STATUS"]
           title: string
+          total_events_organized?: number
           updated_at?: string
         }
         Update: {
           created_at?: string
           description?: string | null
           id?: number
+          status?: Database["public"]["Enums"]["ORGANIZATION_STATUS"]
           title?: string
+          total_events_organized?: number
           updated_at?: string
         }
         Relationships: []
@@ -302,21 +311,21 @@ export type Database = {
           id: number
           points_id: number
           updated_at: string
-          user_id: number
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           points_id: number
           updated_at?: string
-          user_id: number
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: number
           points_id?: number
           updated_at?: string
-          user_id?: number
+          user_id?: string
         }
         Relationships: [
           {
@@ -324,13 +333,6 @@ export type Database = {
             columns: ["points_id"]
             isOneToOne: false
             referencedRelation: "event_points"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_points_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -341,7 +343,7 @@ export type Database = {
           available_dates: string[] | null
           bio: string | null
           created_at: string
-          full_name: string | null
+          fullname: string | null
           id: number
           latitude: number | null
           longitude: number | null
@@ -356,7 +358,7 @@ export type Database = {
           available_dates?: string[] | null
           bio?: string | null
           created_at?: string
-          full_name?: string | null
+          fullname?: string | null
           id?: number
           latitude?: number | null
           longitude?: number | null
@@ -371,7 +373,7 @@ export type Database = {
           available_dates?: string[] | null
           bio?: string | null
           created_at?: string
-          full_name?: string | null
+          fullname?: string | null
           id?: number
           latitude?: number | null
           longitude?: number | null
@@ -388,19 +390,19 @@ export type Database = {
           badge_id: number
           created_at: string
           id: number
-          user_id: number
+          user_id: string
         }
         Insert: {
           badge_id: number
           created_at?: string
           id?: number
-          user_id: number
+          user_id: string
         }
         Update: {
           badge_id?: number
           created_at?: string
           id?: number
-          user_id?: number
+          user_id?: string
         }
         Relationships: [
           {
@@ -408,13 +410,6 @@ export type Database = {
             columns: ["badge_id"]
             isOneToOne: false
             referencedRelation: "badges"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "users_badges_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -425,21 +420,21 @@ export type Database = {
           created_at: string
           id: number
           updated_at: string
-          user_id: number
+          user_id: string
         }
         Insert: {
           category_id: number
           created_at?: string
           id?: number
           updated_at?: string
-          user_id: number
+          user_id: string
         }
         Update: {
           category_id?: number
           created_at?: string
           id?: number
           updated_at?: string
-          user_id?: number
+          user_id?: string
         }
         Relationships: [
           {
@@ -449,13 +444,6 @@ export type Database = {
             referencedRelation: "volunteering_categories"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "users_categories_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       users_organizations: {
@@ -463,25 +451,22 @@ export type Database = {
           created_at: string
           id: number
           organization_id: number
-          status: Database["public"]["Enums"]["ORGANIZATION_STATUS"]
           updated_at: string
-          user_id: number
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           organization_id: number
-          status?: Database["public"]["Enums"]["ORGANIZATION_STATUS"]
           updated_at?: string
-          user_id: number
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: number
           organization_id?: number
-          status?: Database["public"]["Enums"]["ORGANIZATION_STATUS"]
           updated_at?: string
-          user_id?: number
+          user_id?: string
         }
         Relationships: [
           {
@@ -489,13 +474,6 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations_profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "users_organizations_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
         ]
