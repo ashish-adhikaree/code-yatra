@@ -22,7 +22,7 @@ export default async function AuthenticatedLayout({
             .single();
         return (
             <div className="space-y-4">
-                <Header />
+                <Header user={user}/>
                 <div className="min-h-[60vh]">{userProfile?.fullname ? children: <AddFullNameDialog/>}</div>
                 <Footer />
             </div>

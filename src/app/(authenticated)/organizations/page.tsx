@@ -5,6 +5,8 @@ import { createClient } from "@/lib/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ErrorBanner from "@/components/shared/error-banner";
 import OrganizationCard from "./components/organization-card";
+import { Button, buttonVariants } from "@/components/ui/button";
+import Pagination from "@/components/shared/pagination";
 
 export const metadata: Metadata = {
     title: "Organizations",
@@ -26,7 +28,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ p
         .from("users_organizations")
         .select("*,organization_id(*)")
         .eq("user_id", user.id)
-        .range(parsedParams.page * parsedParams.size, (parsedParams.page + 1) * parsedParams.size);
+        .range(parsedParams.page * parsedParams.size, (parsedParams.page + 1) * parsedParams.size - 1)
+        .order("created_at", { ascending: false });
 
     return (
         <div className="max-w-container space-y-4">
@@ -37,19 +40,26 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ p
             {!error ? (
                 <div>
                     {organizations && organizations.length > 0 ? (
-                        <div className="grid grid-cols-4 gap-6">
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {organizations.map((organization, index) => {
                                 return <OrganizationCard key={index} organization={organization.organization_id} />;
                             })}
                         </div>
                     ) : (
-                        <ErrorBanner type="warning">
-                          {parsedParams.page === 0 ? "You have not created any organizations yet." : "No more organizations to show."}
+                        <ErrorBanner>
+                            {parsedParams.page === 0
+                                ? "You have not created any organizations yet."
+                                : "No more organizations to show."}
                         </ErrorBanner>
                     )}
+                    <Pagination
+                        currentSize={organizations.length}
+                        size={parsedParams.size}
+                        page={parsedParams.page + 1}
+                    />
                 </div>
             ) : (
-                <ErrorBanner>Error fetching organizations list.</ErrorBanner>
+                <ErrorBanner type="error">Error fetching organizations list.</ErrorBanner>
             )}
         </div>
     );
