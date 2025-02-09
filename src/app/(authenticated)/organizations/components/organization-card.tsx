@@ -31,7 +31,7 @@ export default function OrganizationCard({ organization }: { organization: Table
             <div className="flex items-center gap-2 justify-between">
                 <div className="flex items-center gap-2 flex-wrap">
                     <OrganizationStatus>{organization.status}</OrganizationStatus>
-                    {organization.total_events_organized == 0 && (
+                    {organization.total_events_organized != 0 && (
                         <span className="px-2 py-[2px] border rounded-md text-xs leading-none uppercase bg-secondary">
                             {organization.total_events_organized} events
                         </span>

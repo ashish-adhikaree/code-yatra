@@ -103,7 +103,7 @@ export type Database = {
           id: number
           status: Database["public"]["Enums"]["EVENT_SIGNUPS_STATUS"]
           updated_at: string
-          user_id: number
+          user_id: string
         }
         Insert: {
           created_at?: string
@@ -111,7 +111,7 @@ export type Database = {
           id?: number
           status: Database["public"]["Enums"]["EVENT_SIGNUPS_STATUS"]
           updated_at?: string
-          user_id: number
+          user_id: string
         }
         Update: {
           created_at?: string
@@ -119,7 +119,7 @@ export type Database = {
           id?: number
           status?: Database["public"]["Enums"]["EVENT_SIGNUPS_STATUS"]
           updated_at?: string
-          user_id?: number
+          user_id?: string
         }
         Relationships: [
           {
@@ -127,13 +127,6 @@ export type Database = {
             columns: ["event_id"]
             isOneToOne: false
             referencedRelation: "events"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "event_signups_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
         ]

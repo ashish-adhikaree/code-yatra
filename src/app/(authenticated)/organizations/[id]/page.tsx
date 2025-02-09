@@ -10,6 +10,8 @@ import CreateOrganizationDialog from "../components/create-organization-dialog";
 import DeleteOrganization from "../components/delete-organization";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/lib/utils/supabase/types";
+import OrganizationEventsList from "../components/organizations-events-list";
+import { getParsedPaginationParams } from "@/lib/zod-schemas/shared";
 
 export async function getOrganizationDetails(params: { id: string; supabaseClient?: SupabaseClient<Database> }) {
     const supabase = params.supabaseClient || (await createClient());
@@ -34,8 +36,15 @@ export async function getOrganizationDetails(params: { id: string; supabaseClien
     return { organization, error, loggedInUser };
 }
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+export default async function Page({
+    params,
+    searchParams,
+}: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ page?: string; size?: string }>;
+}) {
     const { id } = await params;
+    const parsedSearchParams = getParsedPaginationParams(await searchParams) ?? { page: 0, size: 10 };
     const { organization, error, loggedInUser } = await getOrganizationDetails({ id });
 
     if (error) {
@@ -70,7 +79,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                 <div className="flex items-center gap-2 justify-between">
                     <div className="flex items-center gap-2 flex-wrap">
                         {isAuthor ? <OrganizationStatus>{organization.status}</OrganizationStatus> : null}
-                        {organization.total_events_organized == 0 && (
+                        {organization.total_events_organized != 0 && (
                             <span className="px-2 py-[2px] border rounded-md text-xs leading-none uppercase bg-secondary">
                                 {organization.total_events_organized} events
                             </span>
@@ -110,6 +119,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                     <h1 className="text-lg font-medium">{organization.title}</h1>
                     <p className="text-muted-foreground max-w-lg">{organization.description}</p>
                 </div>
+                <OrganizationEventsList isAuthor={isAuthor} organization={organization} searchParams={parsedSearchParams}/>
             </div>
         </div>
     );

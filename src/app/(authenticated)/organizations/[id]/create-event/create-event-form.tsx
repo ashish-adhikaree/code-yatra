@@ -8,7 +8,6 @@ import { useActionState, useEffect, useState } from "react";
 import EventFormMap from "./event-form-map";
 import { createEvent } from "../action";
 import { XIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import SubmitButton from "@/components/shared/submit-button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -29,6 +28,8 @@ export default function CreateEventForm({
             router.push(`/organizations/${organization.id}/events/${state.eventId}`);
         }
     }, [state]);
+
+    
 
     return (
         <form action={createEventAction} className="space-y-6">

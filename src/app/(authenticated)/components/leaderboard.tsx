@@ -25,7 +25,7 @@ export default async function Leaderboard() {
             {users_profiles.map((user, index) => (
                 <div key={index} className="w-full flex flex-col justify-center items-center gap-4">
                     <div className="w-full flex justify-start">
-                        <h5 className="text-lg font-medium">Leaderboards</h5>
+                        <h5 className="text-lg font-medium">Leaderboard</h5>
                     </div>
                     <Link
                         href={`/users/${user.id}`}
