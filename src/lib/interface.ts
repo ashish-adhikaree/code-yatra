@@ -73,3 +73,13 @@ export type EditProfileState =
           generalErrorMessage?: string;
       }
     | undefined;
+
+export type UpdateEventStatusStateState =
+    | {
+          success?: boolean;
+          errors?: {
+              status?: string[];
+          };
+          generalErrorMessage?: string;
+      }
+    | undefined;

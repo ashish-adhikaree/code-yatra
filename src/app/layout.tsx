@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/contexts/theme-context";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -22,8 +23,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${inter.className} antialiased h-screen dark`}>
-                <div className="w-full">{children}</div>
+            <body className={`${inter.className} antialiased h-screen`}>
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                    <div className="w-full">{children}</div>
+                </ThemeProvider>
             </body>
         </html>
     );

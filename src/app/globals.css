@@ -102,3 +102,8 @@ input[type="checkbox"]:checked + .categories-chip svg {
     background-color: hsl(var(--muted));
     border-radius: 3px;
 }
+
+.scrollbar-none::-webkit-scrollbar{
+    display: none;
+    height: 0;
+}

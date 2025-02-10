@@ -1,10 +1,11 @@
 "use server";
 
-import { ApplyToEventFormState, CreateEventState } from "@/lib/interface";
+import { ApplyToEventFormState, CreateEventState, UpdateEventStatusStateState } from "@/lib/interface";
 import { createClient } from "@/lib/utils/supabase/server";
 import { CreateEventSchema } from "@/lib/zod-schemas/event";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 export async function createEvent(state: CreateEventState, formData: FormData) {
     try {
@@ -103,6 +104,60 @@ export async function deleteEvent(id: number) {
         redirect("/organizations");
     } catch (err) {
         console.log(err);
+    }
+}
+
+export async function updateEventStatus(
+    state: UpdateEventStatusStateState,
+    formData: FormData
+): Promise<{
+    generalErrorMessage?: string;
+    payload?: FormData;
+    success?: boolean;
+    errors?: { status?: string[] };
+}> {
+    try {
+        const supabase = await createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        const validatedFields = z
+            .object({
+                status: z.enum(["open", "closed", "completed"]),
+            })
+            .safeParse({
+                status: formData.get("status") as string,
+            });
+
+        if (!validatedFields.success) {
+            return {
+                errors: validatedFields.error.flatten().fieldErrors,
+                payload: formData,
+            };
+        }
+
+        if (!user) return redirect("/login");
+
+        const { error } = await supabase
+            .from("events")
+            .update({
+                status: validatedFields.data.status,
+            })
+            .eq("id", parseInt(formData.get("id") as string));
+
+        if (error) {
+            throw error;
+        }
+        return {
+            success: true,
+            payload: formData,
+        };
+    } catch (err: any) {
+        console.log(err);
+        return {
+            generalErrorMessage: err.message || "Something went wrong. Please try again.",
+            payload: formData,
+        };
     }
 }
 

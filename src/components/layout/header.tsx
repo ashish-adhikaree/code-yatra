@@ -11,6 +11,9 @@ import { logout } from "@/app/(not-authenticated)/login/actions";
 import { usePathname } from "next/navigation";
 import Logo from "../shared/logo";
 import { type User } from "@supabase/supabase-js";
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
+import { useTheme } from "next-themes";
 
 const NAVLINKS = [
     {
@@ -33,6 +36,8 @@ const NAVLINKS = [
 export default function Header({ user }: { user: User | null }) {
     const [_, logoutAction] = useActionState(logout, undefined);
     const pathName = usePathname();
+    const { theme, setTheme } = useTheme();
+
     return (
         <div className="sticky top-0 backdrop-blur-sm z-[300] bg-background/60">
             <header className="max-w-container flex items-center justify-between gap-4 border-b">
@@ -93,6 +98,24 @@ export default function Header({ user }: { user: User | null }) {
                                         <p>Logout</p>
                                     </Button>
                                 </form>
+                                <div>
+                                    <Button variant="ghost" className="w-full rounded-none justify-start focus-visible:ring-0 py-4 border-t">
+                                        {theme === "dark" ? (
+                                            <Switch
+                                                id="theme"
+                                                checked={true}
+                                                onCheckedChange={(val) => setTheme("light")}
+                                            />
+                                        ) : (
+                                            <Switch
+                                                id="theme"
+                                                checked={false}
+                                                onCheckedChange={(val) => setTheme("dark")}
+                                            />
+                                        )}
+                                        <Label htmlFor="dark-mode">Dark Mode</Label>
+                                    </Button>
+                                </div>
                             </div>
                         </PopoverContent>
                     </Popover>

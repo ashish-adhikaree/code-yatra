@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import EventsLocation from "../components/events-locations";
 import ApplyToEvent from "../components/apply-event-banner";
+import UpdateEventStatus from "../components/update-event-status-dialog";
 
 export default async function Page({
     params,
@@ -75,8 +76,8 @@ export default async function Page({
                     <ArrowLeft className="h-6 w-6" />
                     <p>Back</p>
                 </Link>
-                <div className="flex items-center gap-2 justify-between">
-                    <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-2 justify-between flex-wrap">
+                    <div className="flex items-center gap-2">
                         <EventStatus>{event.status}</EventStatus>
                         {event.required_volunteers != 0 && (
                             <span className="px-2 py-[2px] border rounded-md text-xs leading-none uppercase bg-secondary">
@@ -86,7 +87,8 @@ export default async function Page({
                         <ParticipantsCount eventId={event.id} />
                     </div>
                     {isAuthor ? (
-                        <div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex items-center gap-2">
+                            <UpdateEventStatus eventId={event.id} status={event.status}/>
                             <DeleteEvent id={event.id} />
                         </div>
                     ) : null}
@@ -133,7 +135,7 @@ export default async function Page({
                     ))}
                 </div>
                 <ApplyToEvent eventId={event.id} status={event.status} />
-                {isAuthor && <ParticipantsList event={event} searchParams={parsedSearchParams} />}
+                {isAuthor && <ParticipantsList event={event} />}
             </div>
         </div>
     );

@@ -25,6 +25,7 @@ export default async function ApplyToEvent({
         .from("event_signups")
         .select("*")
         .eq("user_id", user.id)
+        .eq("event_id", eventId)
         .maybeSingle();
 
     if (user_signup_error) {
