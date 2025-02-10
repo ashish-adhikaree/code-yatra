@@ -2,6 +2,7 @@ import ErrorBanner from "@/components/shared/error-banner";
 import { createClient } from "@/lib/utils/supabase/server";
 import { Tables } from "@/lib/utils/supabase/types";
 import ExportParticipants from "./export-participants";
+import { DataTableDemo } from "./participants-table";
 
 export default async function ParticipantsList({
     event,
@@ -56,20 +57,38 @@ export default async function ParticipantsList({
     }
     return (
         <div className="py-2">
-            <div className="flex items-center gap-2 justify-between">
-                <h2 className="text-lg font-medium">Participants</h2>
-                <ExportParticipants participants={participants} userProfiles={userProfiles} />
-            </div>
-            {participants.map((participant) => {
-                const userProfile = userProfiles.find((up) => up.auth_user_id === participant.user_id);
-                if (!userProfile) return;
-                return (
-                    <article key={participant.id} className="">
-                        <h3>{userProfile.fullname}</h3>
-                        {/* <p>{userProfile}</p> */}
-                    </article>
-                );
-            })}
+        <div className="flex items-center gap-2 justify-between">
+            <h2 className="text-lg font-medium">Participants</h2>
+            <ExportParticipants participants={participants} userProfiles={userProfiles} />
         </div>
+    
+        {/* Remove duplicates using a Map */}
+        <DataTableDemo 
+            data={Array.from(
+                new Map(
+                    participants
+                        .map((participant) => {
+                            const userProfile = userProfiles.find(
+                                (up) => up.auth_user_id === participant.user_id
+                            );
+                            return userProfile
+                                ? {
+                                    id: participant.id || "N/A",
+                                    name: userProfile.fullname || "Unknown",
+                                    volunteering:userProfile.total_volunteering_hours||0,
+                                    points:userProfile.total_volunteering_points||0,
+                                    events:userProfile.total_events_attended||0,
+                                    status:participant.status,
+
+                                  }
+                                : null;
+                        })
+                        .filter(Boolean) // Remove null values
+                        .map((user) => [user.id, user]) // Use user ID as key
+                ).values()
+            )}
+        />
+    </div>
+    
     );
 }
