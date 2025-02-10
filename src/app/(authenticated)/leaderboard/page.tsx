@@ -92,6 +92,13 @@ export default async function Podium() {
                             <p className="text-5xl">3rd</p>
                         </div>
                     </div>
+            {/* Second Place */}
+            <div className="flex flex-col justify-center items-center gap-4">
+            <div className="flex flex-col justify-center items-center">
+                <TrophyIcon size={42} className="text-gray-400" />
+                <div className="flex flex-col justify-center items-center pt-5">
+                <h4>{secondRank.fullname}</h4>
+                <p>{secondRank.total_volunteering_points} points</p>
                 </div>
 
                 <div className="w-full">
@@ -120,6 +127,13 @@ export default async function Podium() {
                             ))}
                         </Table>
                     )}
+            {/* First Place */}
+            <div className="flex flex-col justify-center items-center gap-4">
+            <div className="flex flex-col justify-center items-center">
+                <TrophyIcon size={42} className="text-yellow-600" />
+                <div className="flex flex-col justify-center items-center pt-5">
+                <h4>{firstRank.fullname}</h4>
+                <p>{firstRank.total_volunteering_points} points</p>
                 </div>
             </div>
         </div>

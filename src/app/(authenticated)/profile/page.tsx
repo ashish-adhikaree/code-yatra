@@ -7,8 +7,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import ProfilePic from "./components/profile-pic";
 
 export default async function Page() {
+    
     const supabase = await createClient();
-
     const {
         data: { user },
     } = await supabase.auth.getUser();
@@ -43,41 +43,47 @@ export default async function Page() {
 
         return (
             <div className="max-w-container">
-                <div className="flex flex-col py-6">
-                    <div className="flex flex-row justify-center items-center gap-20">
+                <div className="flex flex-col justify-center items-center py-6">
+                    <div className="flex flex-col justify-center items-center">
                         <ProfilePic user={userProfile} />
 
-                        <div className="flex flex-col gap-3">
-                            <div className="flex items-center gap-2">
+                        <div className="flex flex-col justify-center items-center gap-3">
+                            <div className="flex justify-center items-center gap-4 mt-4">
                                 <h4 className="font-semibold text-2xl">{userProfile.fullname}</h4>
-                                <EditProfile user={userProfile} categories={categories}>
-                                    <Button variant="ghost" size="icon">
-                                        <PencilIcon className="h-4 w-4" />
-                                    </Button>
-                                </EditProfile>
+                               
                             </div>
 
-                            <div className="flex justify-between items-center gap-10 w-fit">
-                                <div className="font-extralight">
+                            <div className="flex justify-between items-center gap-10 w-fit py-3">
+                                <div className="font-extralight flex flex-col justify-center items-center gap-2">
                                     <p className="font-semibold">{userProfile.total_volunteering_hours}</p>
                                     <p className="text-sm">volunteering hours</p>
                                 </div>
-                                <div className="font-extralight">
+                                <hr className="h-12 rotate-180 border border-white/20"></hr>
+                                <div className="font-extralight flex flex-col justify-center items-center gap-2">
                                     <p className="font-semibold">{userProfile.total_volunteering_points}</p>{" "}
                                     <p className="text-sm">points</p>
                                 </div>
-                                <div className="font-extralight">
+                                <hr className="h-12 rotate-180 border border-white/20"></hr>
+                                <div className="font-extralight flex flex-col justify-center items-center gap-2">
                                     <p className="font-semibold">{userProfile.total_events_attended}</p>
                                     <p className="text-sm">events attended</p>
                                 </div>
                             </div>
 
-                            <div className="flex">
-                                <p>{userProfile?.bio}</p>
+                            <div className="flex gap-2">
+                                    <Button className="flex justify-center items-center gap-2" >
+                                        <EditProfile user={userProfile} categories={categories}>
+                                            <p className="flex justify-center items-center gap-2"><PencilIcon className="h-4 w-4" />Edit Profile</p>
+                                        </EditProfile>
+                                    </Button>
                             </div>
 
+                            
+                             
+                           
+
                             {userProfile.users_categories.length > 0 ? (
-                                <div className="flex gap-2 flex-wrap">
+                                <div className="flex gap-2 flex-wrap py-3">
                                     {userProfile.users_categories.map((category, index) => (
                                         <TooltipProvider key={index}>
                                             <Tooltip>
@@ -111,20 +117,12 @@ export default async function Page() {
                                     ))}
                                 </div>
                             ) : null}
+
+                        
+                             <p className="max-w-xl text-center text-muted-foreground pb-20">{userProfile?.bio}</p>
                         </div>
+                       
                     </div>
-
-                    {/* Certificates
-                    <div className="w-full flex flex-col gap-10 mt-5">
-                        <div className="w-full flex flex-row gap-5 justify-center items-center">
-                            <h4>Certificates</h4>
-                            <hr className="w-full border border-white/10"></hr>
-                        </div>
-
-                        <div className="flex flex-wrap gap-10 pb-40">
-                            <div className="py-32 px-40 bg-red-500">Certificate 1</div>
-                        </div>
-                    </div> */}
                 </div>
             </div>
         );
