@@ -105,6 +105,7 @@ export type Database = {
           deduction_points_for_absence: number
           description: string | null
           end_date: string
+          event_image: string | null
           id: number
           latitude: number
           location: string
@@ -123,6 +124,7 @@ export type Database = {
           deduction_points_for_absence?: number
           description?: string | null
           end_date: string
+          event_image?: string | null
           id?: number
           latitude: number
           location: string
@@ -141,6 +143,7 @@ export type Database = {
           deduction_points_for_absence?: number
           description?: string | null
           end_date?: string
+          event_image?: string | null
           id?: number
           latitude?: number
           location?: string
@@ -317,6 +320,7 @@ export type Database = {
           id: number
           latitude: number | null
           longitude: number | null
+          profile_pic: string | null
           radius_in_km: number | null
           total_events_attended: number
           total_volunteering_hours: number
@@ -332,6 +336,7 @@ export type Database = {
           id?: number
           latitude?: number | null
           longitude?: number | null
+          profile_pic?: string | null
           radius_in_km?: number | null
           total_events_attended?: number
           total_volunteering_hours?: number
@@ -347,6 +352,7 @@ export type Database = {
           id?: number
           latitude?: number | null
           longitude?: number | null
+          profile_pic?: string | null
           radius_in_km?: number | null
           total_events_attended?: number
           total_volunteering_hours?: number
@@ -381,6 +387,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "badges"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_badges_user_id_fkey1"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }

@@ -154,7 +154,7 @@ export default function CreateEventForm({
                                     />
                                     <div className="flex items-center text-sm px-3 py-1 rounded-xl gap-4 border categories-chip">
                                         <label htmlFor={category.id.toString()}>{category.title}</label>
-                                        <XIcon className="h-4 w-4 group-has-checked:inline hidden" />
+                                        <XIcon className="h-4 w-4 group-has-checked:inline hidden pointer-events-none" />
                                     </div>
                                 </div>
                             );

@@ -92,3 +92,13 @@ input[type="checkbox"]:checked + .categories-chip {
 input[type="checkbox"]:checked + .categories-chip svg {
     display: block;
 }
+
+.thin-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted));
+    border-radius: 3px;
+}

@@ -65,10 +65,10 @@ export type EditProfileState =
           success?: boolean;
           errors?: {
               fullname?: string[];
-              latitude?: number;
-              longitude?: number;
-              bio?: string | null;
-              radius_in_km: number;
+              latitude?: string[];
+              longitude?: string[];
+              bio?: string[];
+              radius_in_km?: string[];
           };
           generalErrorMessage?: string;
       }

@@ -1,40 +1,14 @@
 import ErrorBanner from "@/components/shared/error-banner";
-import { createClient } from "@/lib/utils/supabase/server";
 import { OrganizationStatus } from "../components/organization-card";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowLeft, PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
 import CreateOrganizationDialog from "../components/create-organization-dialog";
 import DeleteOrganization from "../components/delete-organization";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { Database } from "@/lib/utils/supabase/types";
 import OrganizationEventsList from "../components/organizations-events-list";
 import { getParsedPaginationParams } from "@/lib/zod-schemas/shared";
-
-export async function getOrganizationDetails(params: { id: string; supabaseClient?: SupabaseClient<Database> }) {
-    const supabase = params.supabaseClient || (await createClient());
-    const {
-        data: { user: loggedInUser },
-    } = await supabase.auth.getUser();
-    if (!loggedInUser) {
-        redirect("/login");
-    }
-
-    const { data: organization, error } = await supabase
-        .from("organizations_profiles")
-        .select(
-            `
-    *,
-    users_organizations!inner(user_id)
-  `
-        )
-        .eq("id", parseInt(params.id, 10))
-        .maybeSingle();
-
-    return { organization, error, loggedInUser };
-}
+import { getOrganizationDetails } from "../actions";
 
 export default async function Page({
     params,
