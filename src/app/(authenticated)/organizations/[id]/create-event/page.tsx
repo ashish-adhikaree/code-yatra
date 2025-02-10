@@ -1,10 +1,10 @@
 import { Metadata } from "next";
-import { getOrganizationDetails } from "../page";
 import ErrorBanner from "@/components/shared/error-banner";
 import { createClient } from "@/lib/utils/supabase/server";
 import CreateEventForm from "./create-event-form";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { getOrganizationDetails } from "../../actions";
 
 export const metadata: Metadata = {
     title: "Create Event",

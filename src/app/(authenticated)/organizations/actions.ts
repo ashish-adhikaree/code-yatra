@@ -2,9 +2,34 @@
 
 import { CreateOrganizationState } from "@/lib/interface";
 import { createClient } from "@/lib/utils/supabase/server";
+import { Database } from "@/lib/utils/supabase/types";
 import { CreateOrganizationSchema } from "@/lib/zod-schemas/organization";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+
+export async function getOrganizationDetails(params: { id: string; supabaseClient?: SupabaseClient<Database> }) {
+    const supabase = params.supabaseClient || (await createClient());
+    const {
+        data: { user: loggedInUser },
+    } = await supabase.auth.getUser();
+    if (!loggedInUser) {
+        redirect("/login");
+    }
+
+    const { data: organization, error } = await supabase
+        .from("organizations_profiles")
+        .select(
+            `
+    *,
+    users_organizations!inner(user_id)
+  `
+        )
+        .eq("id", parseInt(params.id, 10))
+        .maybeSingle();
+
+    return { organization, error, loggedInUser };
+}
 
 export async function createOrganization(state: CreateOrganizationState, formData: FormData) {
     try {
@@ -86,9 +111,9 @@ export async function updateOrganization(
         if (error) {
             throw error;
         }
-
         return {
             success: true,
+            payload: formData,
         };
     } catch (err: any) {
         console.log(err);

@@ -2,9 +2,7 @@ import ErrorBanner from "@/components/shared/error-banner";
 import { createClient } from "@/lib/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { Database } from "@/lib/utils/supabase/types";
+import { ArrowLeft, MapPin } from "lucide-react";
 import { getParsedPaginationParams } from "@/lib/zod-schemas/shared";
 import DeleteEvent from "../../../components/delete-event";
 import ParticipantsList from "../components/participants-list";
@@ -21,29 +19,6 @@ import {
 import { Button } from "@/components/ui/button";
 import EventsLocation from "../components/events-locations";
 import ApplyToEvent from "../components/apply-event-banner";
-
-export async function getOrganizationDetails(params: { id: string; supabaseClient?: SupabaseClient<Database> }) {
-    const supabase = params.supabaseClient || (await createClient());
-    const {
-        data: { user: loggedInUser },
-    } = await supabase.auth.getUser();
-    if (!loggedInUser) {
-        redirect("/login");
-    }
-
-    const { data: organization, error } = await supabase
-        .from("organizations_profiles")
-        .select(
-            `
-    *,
-    users_organizations!inner(user_id)
-  `
-        )
-        .eq("id", parseInt(params.id, 10))
-        .maybeSingle();
-
-    return { organization, error, loggedInUser };
-}
 
 export default async function Page({
     params,
@@ -158,9 +133,7 @@ export default async function Page({
                     ))}
                 </div>
                 <ApplyToEvent eventId={event.id} status={event.status} />
-                {isAuthor && 
-                <ParticipantsList event={event} searchParams={parsedSearchParams} />
-            }
+                {isAuthor && <ParticipantsList event={event} searchParams={parsedSearchParams} />}
             </div>
         </div>
     );

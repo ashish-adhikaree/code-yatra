@@ -34,68 +34,70 @@ export default function Header({ user }: { user: User | null }) {
     const [_, logoutAction] = useActionState(logout, undefined);
     const pathName = usePathname();
     return (
-        <header className="max-w-container flex items-center justify-between gap-4 border-b">
-            <Link href="/">
-                <Logo />
-            </Link>
-            <div className="flex items-center">
-                {NAVLINKS.map(({ label, url, icon: Icon }, index) => (
-                    <TooltipProvider key={index}>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
+        <div className="sticky top-0 backdrop-blur-sm z-[300] bg-background/60">
+            <header className="max-w-container flex items-center justify-between gap-4 border-b">
+                <Link href="/">
+                    <Logo />
+                </Link>
+                <div className="flex items-center">
+                    {NAVLINKS.map(({ label, url, icon: Icon }, index) => (
+                        <TooltipProvider key={index}>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={url}
+                                        key={index}
+                                        className={cn(
+                                            "px-6 py-4 hover:bg-muted/50 border-b-[3px] border-transparent",
+                                            pathName == url ? "text-primary border-b-primary" : ""
+                                        )}
+                                    >
+                                        <Icon />
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p className="capitalize">{label}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    ))}
+                </div>
+                <div>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Avatar className="cursor-pointer h-8 w-8">
+                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                        </PopoverTrigger>
+                        <PopoverContent align="end" className="mt-2 p-0 overflow-clip">
+                            <div className="flex flex-col">
                                 <Link
-                                    href={url}
-                                    key={index}
                                     className={cn(
-                                        "px-6 py-4 hover:bg-muted/50 border-b-[3px] border-transparent",
-                                        pathName == url ? "text-primary border-b-primary" : ""
+                                        buttonVariants({
+                                            variant: "ghost",
+                                        }),
+                                        "rounded-none justify-start  focus-visible:ring-0"
                                     )}
+                                    href="/profile"
                                 >
-                                    <Icon />
+                                    <UserRound />
+                                    <p>Profile</p>
                                 </Link>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p className="capitalize">{label}</p>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
-                ))}
-            </div>
-            <div>
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Avatar className="cursor-pointer h-8 w-8">
-                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                            <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
-                    </PopoverTrigger>
-                    <PopoverContent align="end" className="mt-2 p-0 overflow-clip">
-                        <div className="flex flex-col">
-                            <Link
-                                className={cn(
-                                    buttonVariants({
-                                        variant: "ghost",
-                                    }),
-                                    "rounded-none justify-start  focus-visible:ring-0"
-                                )}
-                                href="/profile"
-                            >
-                                <UserRound />
-                                <p>Profile</p>
-                            </Link>
-                            <form action={logoutAction} className="w-full">
-                                <Button
-                                    variant="ghost"
-                                    className="w-full rounded-none justify-start focus-visible:ring-0"
-                                >
-                                    <LogOut />
-                                    <p>Logout</p>
-                                </Button>
-                            </form>
-                        </div>
-                    </PopoverContent>
-                </Popover>
-            </div>
-        </header>
+                                <form action={logoutAction} className="w-full">
+                                    <Button
+                                        variant="ghost"
+                                        className="w-full rounded-none justify-start focus-visible:ring-0"
+                                    >
+                                        <LogOut />
+                                        <p>Logout</p>
+                                    </Button>
+                                </form>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                </div>
+            </header>
+        </div>
     );
 }
