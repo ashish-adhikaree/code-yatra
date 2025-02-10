@@ -46,7 +46,7 @@ export default async function Podium() {
                 <TrophyIcon size={42} className="text-gray-400" />
                 <div className="flex flex-col justify-center items-center pt-5">
                 <h4>{secondRank.fullname}</h4>
-                <p>{secondRank.total_volunteering_hours} points</p>
+                <p>{secondRank.total_volunteering_points} points</p>
                 </div>
             </div>
             <div
@@ -65,7 +65,7 @@ export default async function Podium() {
                 <TrophyIcon size={42} className="text-yellow-600" />
                 <div className="flex flex-col justify-center items-center pt-5">
                 <h4>{firstRank.fullname}</h4>
-                <p>{firstRank.total_volunteering_hours} points</p>
+                <p>{firstRank.total_volunteering_points} points</p>
                 </div>
             </div>
 

@@ -13,6 +13,7 @@ export const metadata: Metadata = {
         default: "Voluntier",
     },
     description: "Developed by the Codeblooded.",
+   
 };
 
 export default function RootLayout({
