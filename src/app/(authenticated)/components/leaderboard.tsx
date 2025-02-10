@@ -50,7 +50,7 @@ export default async function Leaderboard() {
                                 <span className="text-sm">{rankSuffix[index]}</span>
                             </p>
                             <div className="space-y-1">
-                                <h5>{user.fullname}</h5>
+                                <h5>{user.fullname || "Anonymous"}</h5>
                                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                     <p>{user.total_volunteering_points}pts</p>|<p>{user.total_volunteering_hours}hrs</p>
                                     | <p>{user.total_events_attended} events</p>
