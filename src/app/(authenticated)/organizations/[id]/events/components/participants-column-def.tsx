@@ -53,6 +53,7 @@ const columnHelper = createColumnHelper<{
     events: number;
     categories: string[];
     createdAt: string;
+    eventStatus: Tables<"events">["status"];
     status: Tables<"event_signups">["status"];
 }>();
 
@@ -121,7 +122,7 @@ const COLUMNS = [
     columnHelper.accessor("volunteeringHours", {
         header: "Volunteering Hours",
         cell: ({ getValue }) => {
-            return <div>{getValue()}</div>;
+            return <div>{getValue().toFixed(2)}hrs</div>;
         },
     }),
     columnHelper.accessor("points", {
@@ -170,7 +171,6 @@ const COLUMNS = [
                         .eq("id", row.original.id)
                         .select("*");
                     const a = await supabase.from("event_signups").select("*").eq("id", row.original.id);
-                    console.log(data, "abc", row.original.id, a);
                     if (error) {
                         setErrorMessage("Something went wrong while updating the status. Please try again later.");
                     } else {
@@ -189,7 +189,7 @@ const COLUMNS = [
             return (
                 <div>
                     <div className="flex gap-2">
-                        {row.original.status === "pending" ? (
+                        {row.original.status === "pending" && row.original.eventStatus != "completed" ? (
                             <>
                                 <Button
                                     disabled={loadingState.approved}
@@ -248,22 +248,66 @@ const COLUMNS = [
                                 </AlertDialog>
                             </>
                         ) : null}
-                        {row.original.status === "approved" ? (
-                            <Button
-                                disabled={loadingState.attended}
-                                size="sm"
-                                onClick={() => handleStatusChange("attended")}
-                            >
-                                {loadingState.attended ? (
-                                    <>
-                                        <Image src={Spinner} className="h-5 w-5" alt="loading" fetchPriority="high" />
-                                        &nbsp;&nbsp;
-                                    </>
-                                ) : null}
-                                Mark as Attended
-                            </Button>
+                        {row.original.status === "approved" && row.original.eventStatus == "completed" ? (
+                            <>
+                                <Button
+                                    disabled={loadingState.attended}
+                                    size="sm"
+                                    onClick={() => handleStatusChange("attended")}
+                                >
+                                    {loadingState.attended ? (
+                                        <>
+                                            <Image
+                                                src={Spinner}
+                                                className="h-5 w-5"
+                                                alt="loading"
+                                                fetchPriority="high"
+                                            />
+                                            &nbsp;&nbsp;
+                                        </>
+                                    ) : null}
+                                    Mark as Attended
+                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button size="sm" variant={"outline"}>
+                                            Mark as Absent
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently mark this
+                                                volunteer&apos;s as absent.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <Button
+                                                disabled={loadingState.absent}
+                                                variant="destructive"
+                                                onClick={() => handleStatusChange("absent")}
+                                            >
+                                                {loadingState.absent ? (
+                                                    <>
+                                                        <Image
+                                                            src={Spinner}
+                                                            className="h-5 w-5"
+                                                            alt="loading"
+                                                            fetchPriority="high"
+                                                        />
+                                                        &nbsp;&nbsp;
+                                                    </>
+                                                ) : null}
+                                                Mark as Absent
+                                            </Button>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </>
                         ) : null}
-                        {errorMessage ? <p>{errorMessage}</p> : null}
+                        {/* {errorMessage ? <p>{errorMessage}</p> : null} */}
                     </div>
                 </div>
             );

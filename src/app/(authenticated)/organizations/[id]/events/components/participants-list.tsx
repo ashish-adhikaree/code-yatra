@@ -58,6 +58,7 @@ export default async function ParticipantsList({ event }: { event: Tables<"event
                                         : [],
                                     status: participant.status,
                                     createdAt: participant.created_at,
+                                    eventStatus: event.status,
                                 };
                             })
                             .filter((val) => val != null)

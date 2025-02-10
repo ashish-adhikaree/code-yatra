@@ -1,13 +1,12 @@
 import EditProfile from "./components/edit-profile-dialog";
 import { createClient } from "@/lib/utils/supabase/server";
 import ErrorBanner from "@/components/shared/error-banner";
-import { PencilIcon } from "lucide-react";
+import { PencilIcon, TrophyIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import ProfilePic from "./components/profile-pic";
 
 export default async function Page() {
-    
     const supabase = await createClient();
     const {
         data: { user },
@@ -50,7 +49,6 @@ export default async function Page() {
                         <div className="flex flex-col justify-center items-center gap-3">
                             <div className="flex justify-center items-center gap-4 mt-4">
                                 <h4 className="font-semibold text-2xl">{userProfile.fullname}</h4>
-                               
                             </div>
 
                             <div className="flex justify-between items-center gap-10 w-fit py-3">
@@ -71,19 +69,18 @@ export default async function Page() {
                             </div>
 
                             <div className="flex gap-2">
-                                    <Button className="flex justify-center items-center gap-2" >
-                                        <EditProfile user={userProfile} categories={categories}>
-                                            <p className="flex justify-center items-center gap-2"><PencilIcon className="h-4 w-4" />Edit Profile</p>
-                                        </EditProfile>
-                                    </Button>
+                                <Button className="flex justify-center items-center gap-2">
+                                    <EditProfile user={userProfile} categories={categories}>
+                                        <p className="flex justify-center items-center gap-2">
+                                            <PencilIcon className="h-4 w-4" />
+                                            Edit Profile
+                                        </p>
+                                    </EditProfile>
+                                </Button>
                             </div>
 
-                            
-                             
-                           
-
                             {userProfile.users_categories.length > 0 ? (
-                                <div className="flex gap-2 flex-wrap py-3">
+                                <div className="flex gap-2 flex-wrap py-3 max-w-md">
                                     {userProfile.users_categories.map((category, index) => (
                                         <TooltipProvider key={index}>
                                             <Tooltip>
@@ -93,24 +90,9 @@ export default async function Page() {
                                                     </span>
                                                 </TooltipTrigger>
                                                 <TooltipContent>
-                                                    <p className="max-w-[min(90vw,200px)]">{category.category_id.description}</p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    ))}
-                                </div>
-                            ) : null}
-                            {userProfile.users_badges.length > 0 ? (
-                                <div>
-                                    <h5 className="font-medium text-lg">Achievements</h5>
-                                    {userProfile.users_badges.map((badge, index) => (
-                                        <TooltipProvider key={index}>
-                                            <Tooltip>
-                                                <TooltipTrigger>
-                                                    <span>{badge.badge_id.title}</span>
-                                                </TooltipTrigger>
-                                                <TooltipContent>
-                                                    <p className="max-w-[min(90vw,200px)]">{badge.badge_id.description}</p>
+                                                    <p className="max-w-[min(90vw,200px)]">
+                                                        {category.category_id.description}
+                                                    </p>
                                                 </TooltipContent>
                                             </Tooltip>
                                         </TooltipProvider>
@@ -118,10 +100,31 @@ export default async function Page() {
                                 </div>
                             ) : null}
 
-                        
-                             <p className="max-w-xl text-center text-muted-foreground pb-20">{userProfile?.bio}</p>
+                            {userProfile.users_badges.length > 0 ? (
+                                <div className="min-w-full max-w-md space-y-2">
+                                    <h5 className="font-medium text-lg">Achievements</h5>
+                                    {userProfile.users_badges.map((badge, index) => (
+                                        <TooltipProvider key={index}>
+                                            <Tooltip>
+                                                <TooltipTrigger>
+                                                    <p className="flex items-center gap-2 text-xs leading-none uppercase px-2 py-1 bg-muted border border-foreground/30 rounded-md">
+                                                        <TrophyIcon className="h-3 w-3 text-primary" />
+                                                        {badge.badge_id.title}
+                                                    </p>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p className="max-w-[min(90vw,200px)]">
+                                                        {badge.badge_id.description}
+                                                    </p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    ))}
+                                </div>
+                            ) : null}
+
+                            <p className="max-w-xl text-center text-muted-foreground pb-20">{userProfile?.bio}</p>
                         </div>
-                       
                     </div>
                 </div>
             </div>

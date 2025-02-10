@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import EventsLocation from "../components/events-locations";
 import ApplyToEvent from "../components/apply-event-banner";
 import UpdateEventStatus from "../components/update-event-status-dialog";
+import { format } from "date-fns";
 
 export default async function Page({
     params,
@@ -88,12 +89,16 @@ export default async function Page({
                     </div>
                     {isAuthor ? (
                         <div className="flex items-center gap-2">
-                            <UpdateEventStatus eventId={event.id} status={event.status}/>
+                            <UpdateEventStatus eventId={event.id} status={event.status} />
                             <DeleteEvent id={event.id} />
                         </div>
                     ) : null}
                 </div>
                 <div>
+                    <p className="text-muted-foreground text-sm">
+                        {format(event.start_date, "do MMM yyyy, hh:mm b")} to{" "}
+                        {format(event.end_date, "do MMM yyyy, hh:mm b")}
+                    </p>
                     <h1 className="text-lg font-medium">{event.title}</h1>
                     <p className="text-muted-foreground max-w-lg">{event.description}</p>
                     <div className="flex items-center gap-2 text-muted-foreground w-fit py-2">
