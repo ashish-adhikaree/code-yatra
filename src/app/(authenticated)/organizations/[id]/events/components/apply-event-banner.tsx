@@ -34,13 +34,20 @@ export default async function ApplyToEvent({
     return (
         <div className="pt-2">
             {user_signup ? (
-                <ErrorBanner>
-                    {user_signup.status == "pending"
-                        ? "You have already applied to this event!"
-                        : user_signup.status == "rejected"
-                        ? "Sorry, you haven't been selected this time. Don't feel demotivated, there are plenty of opportunities waiting for you!"
-                        : "You have already been accepted to this event!"}
-                </ErrorBanner>
+                user_signup.status == "pending" ? (
+                    <ErrorBanner className="bg-green-500/10 border-green-500/30 text-green-500">
+                        You have already applied to this event!
+                    </ErrorBanner>
+                ) : user_signup.status == "rejected" ? (
+                    <ErrorBanner type="error">
+                        Sorry, you haven&apos;t been selected this time. Don&apos;t feel demotivated, there are plenty of
+                        opportunities waiting for you!
+                    </ErrorBanner>
+                ) : (
+                    <ErrorBanner className="bg-green-500/10 border-green-500/30 text-green-500">
+                        You have already been accepted to this event!
+                    </ErrorBanner>
+                )
             ) : status == "open" ? (
                 <div className="flex flex-col gap-2 bg-muted/40 p-4 rounded-md border border-foreground/10">
                     <p>You haven&apos;t applied to this event yet!</p>
