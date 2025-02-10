@@ -22,11 +22,11 @@ export default async function Leaderboard() {
 
     return (
         <div className="w-full bg-muted/40 rounded-md border border-foreground/10 p-4">
+                <div className="w-full flex justify-start pb-5">
+                  <h5 className="text-lg font-medium">Leaderboards</h5>
+                 </div>
             {users_profiles.map((user, index) => (
                 <div key={index} className="w-full flex flex-col justify-center items-center gap-4">
-                    <div className="w-full flex justify-start">
-                        <h5 className="text-lg font-medium">Leaderboard</h5>
-                    </div>
                     <Link
                         href={`/users/${user.id}`}
                         className="w-full flex flex-row justify-between items-center p-2 hover:bg-muted rounded-md transition-colors ease-in-out duration-300"

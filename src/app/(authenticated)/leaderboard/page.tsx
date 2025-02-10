@@ -1,49 +1,138 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ErrorBanner from "@/components/shared/error-banner";
+import { createClient } from "@/lib/utils/supabase/server";
+import { TrophyIcon } from "lucide-react";
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from "@/components/ui/table"
+  
 
-export default function Podium() {
-    return (
-        <div className="container mx-auto flex flex-col items-center justify-center min-h-screen p-6 text-white">
-            <div className="relative flex justify-center items-end space-x-12">
-                {/* 2nd Place */}
-                <div className="flex flex-col items-center">
-                    <Avatar className="w-20 h-20 border-4 border-gray-400 shadow-lg">
-                        <AvatarImage src="/user.jpg" alt="User" />
-                        <AvatarFallback>U2</AvatarFallback>
-                    </Avatar>
-                    <div className="bg-gray-600 text-white text-2xl font-bold w-28 h-44 flex items-center justify-center rounded-lg shadow-2xl relative">
-                        2
-                        <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 w-10 h-4 bg-gray-500 rounded-t-md"></div>
-                    </div>
-                    <div className="mt-2 bg-gray-700 text-gray-300 px-4 py-2 rounded-lg text-lg shadow-md">2195 points</div>
-                </div>
+export default async function Podium() {
+  const supabase = await createClient();
+  const { data: user, error: user_errors } = await supabase
+    .from("user_profiles")
+    .select("*")
+    .order("total_volunteering_points", { ascending: false });
 
-                {/* 1st Place */}
-                <div className="flex flex-col items-center relative">
-                    <Avatar className="w-24 h-24 border-4 border-yellow-400 shadow-xl">
-                        <AvatarImage src="/user.jpg" alt="User" />
-                        <AvatarFallback>U1</AvatarFallback>
-                    </Avatar>
-                    <div className="absolute top-[-10px] right-0 bg-yellow-400 text-white p-2 rounded-full text-4xl shadow-md">👑</div>
-                    <div className="bg-yellow-500 text-white text-4xl font-bold w-32 h-56 flex items-center justify-center rounded-lg shadow-2xl relative border-2 border-yellow-300">
-                        1
-                        <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 w-12 h-5 bg-yellow-600 rounded-t-md"></div>
-                    </div>
-                    <div className="mt-2 bg-gray-700 text-gray-300 px-4 py-2 rounded-lg text-lg shadow-md">1324 points</div>
-                </div>
+  if (user_errors) {
+    return <ErrorBanner type="error">Something went wrong!</ErrorBanner>;
+  }
 
-                {/* 3rd Place */}
-                <div className="flex flex-col items-center">
-                    <Avatar className="w-24 h-24 border-4 border-orange-500 shadow-lg">
-                        <AvatarImage src="/user.jpg" alt="User" />
-                        <AvatarFallback>U3</AvatarFallback>
-                    </Avatar>
-                    <div className="bg-orange-500 text-white text-2xl font-bold w-24 h-36 flex items-center justify-center rounded-lg shadow-2xl relative">
-                        3
-                        <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 w-10 h-4 bg-orange-600 rounded-t-md"></div>
-                    </div>
-                    <div className="mt-2 bg-gray-700 text-gray-300 px-4 py-2 rounded-lg text-lg shadow-md">1242 points</div>
+  if (!user || user.length === 0 || user===null) {
+    return <ErrorBanner type="warning">Failed to fetch the user</ErrorBanner>;
+  }
+  const secondRank = user[1];
+  const firstRank = user[0];
+  const ThirdRank = user[2];
+
+  return (
+    <div className="container mx-auto flex flex-col items-center justify-center text-white">
+      <div className="w-full flex justify-start items-start">
+        <h4 className="text-2xl">Top Volunteers</h4>
+      </div>
+      <div className="w-full flex flex-col justify-center items-center gap-10">
+
+        <div className="flex flex-row justify-center place-items-center gap-16 mt-20">
+            {/* Podium */}
+
+            {/* Second Place */}
+            <div className="flex flex-col justify-center items-center gap-4">
+            <div className="flex flex-col justify-center items-center">
+                <TrophyIcon size={42} className="text-gray-400" />
+                <div className="flex flex-col justify-center items-center pt-5">
+                <h4>{secondRank.fullname}</h4>
+                <p>{secondRank.total_volunteering_hours} points</p>
                 </div>
             </div>
+            <div
+                className="rounded-md min-h-72 min-w-32 backdrop-blur-3xl flex flex-row justify-center items-center "
+                style={{
+                background: "linear-gradient(to top,  transparent 30%, #383838)",
+                }}
+            >
+                <p className="text-5xl">2nd</p>
+            </div>
+            </div>
+
+            {/* First Place */}
+            <div className="flex flex-col justify-center items-center gap-4">
+            <div className="flex flex-col justify-center items-center">
+                <TrophyIcon size={42} className="text-yellow-600" />
+                <div className="flex flex-col justify-center items-center pt-5">
+                <h4>{firstRank.fullname}</h4>
+                <p>{firstRank.total_volunteering_hours} points</p>
+                </div>
+            </div>
+
+            <div
+                className="rounded-md min-h-96 min-w-32 backdrop-blur-3xl flex flex-row justify-center items-center "
+                style={{
+                background: "linear-gradient(to top,  transparent 30%, #383838)",
+                }}
+            >
+                <p className="text-5xl">1st</p>
+            </div>
+            </div>
+
+            {/* Third Place */}
+            <div className="flex flex-col justify-center items-center gap-4">
+            <div className="flex flex-col justify-center items-center">
+                <TrophyIcon size={42} className="text-amber-800"/>
+                <div className="flex flex-col justify-center items-center pt-5">
+                <h4>{ThirdRank?.fullname !== undefined ? ThirdRank?.fullname : "No user Found!"}</h4>
+                <p>{ThirdRank?.total_volunteering_points !== undefined ? ThirdRank?.total_volunteering_points : null} points</p>
+                </div>
+            </div>
+            <div
+                className="rounded-md min-h-60 min-w-32 backdrop-blur-3xl flex flex-row justify-center items-center "
+                style={{
+                background: "linear-gradient(to top,  transparent 20%, #383838)",
+                }}
+            >
+                <p className="text-5xl">3rd</p>
+            </div>
+            </div>
         </div>
-    );
+
+        <div className="w-full">
+            {
+                user?.length>4 && 
+                <Table className="w-full justify-evenly">
+                <TableCaption>A list of Volunteers ranking based on their points.</TableCaption>
+                <TableHeader>
+                    <TableRow>
+                    <TableHead >Rank</TableHead>
+                    <TableHead >Full Name</TableHead>
+                    <TableHead>Total Points</TableHead>
+                    <TableHead>Total Hours Completed</TableHead>
+                    <TableHead >Total Events Attended</TableHead>
+                    </TableRow>
+                </TableHeader>
+                {
+                user.map((users,index)=>(
+                <TableBody key={index} >
+                    <TableRow>
+                    <TableCell className="font-medium">{index}</TableCell>
+                    <TableCell>{users.fullname}</TableCell>
+                    <TableCell>{users.total_volunteering_points}</TableCell>
+                    <TableCell>{users.total_volunteering_hours}</TableCell>
+                    <TableCell>{users.total_events_attended}</TableCell>
+                    </TableRow>
+                </TableBody>
+                ))
+            }
+                </Table>
+
+            }
+           
+
+        </div>
+      </div>
+    </div>
+  );
 }
