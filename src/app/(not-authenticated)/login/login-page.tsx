@@ -10,7 +10,7 @@ import { useActionState } from "react";
 export default function LoginForm() {
     const [state, loginAction] = useActionState(login, undefined);
     return (
-        <Card className="max-h-[70vh] overflow-y-auto">
+        <Card className="overflow-y-auto border-none w-full max-w-[400px] bg-transparent">
             <CardHeader>
                 <CardTitle>Login</CardTitle>
                 <CardDescription>Enter your credentials and login to your account.</CardDescription>
@@ -42,7 +42,7 @@ export default function LoginForm() {
                     {state?.generalErrorMessage && <p className="text-red-500 text-xs">{state.generalErrorMessage}</p>}
                 </CardContent>
                 <CardFooter className="flex-col items-stretch">
-                    <p className="text-xs pb-2">
+                    <p className="text-sm text-muted-foreground pb-2">
                         Don&apos;t have an account?{" "}
                         <Link className="underline" href="/signup">
                             Signup

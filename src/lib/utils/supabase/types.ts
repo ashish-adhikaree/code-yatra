@@ -1,5 +1,3 @@
-//This is dummy types: needs to be updated
-
 export type Json =
   | string
   | number
@@ -36,154 +34,461 @@ export type Database = {
   }
   public: {
     Tables: {
-      courses: {
+      badges: {
         Row: {
-          code: string | null
           created_at: string
-          description: string | null
+          description: string
           id: number
+          required_events_participation: number
+          required_points: number
           title: string
-          updated_at: string
-          user_id: string
+          updated_at: string | null
         }
         Insert: {
-          code?: string | null
           created_at?: string
-          description?: string | null
+          description: string
           id?: number
+          required_events_participation: number
+          required_points: number
           title: string
-          updated_at?: string
-          user_id: string
+          updated_at?: string | null
         }
         Update: {
-          code?: string | null
           created_at?: string
-          description?: string | null
+          description?: string
           id?: number
+          required_events_participation?: number
+          required_points?: number
           title?: string
-          updated_at?: string
-          user_id?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
-      tests: {
+      event_signups: {
         Row: {
-          course_id: number
           created_at: string
-          date: string
-          description: string | null
-          excluded_topic_ids: number[] | null
+          event_id: number
           id: number
-          passing_percentage: number
-          result_date: string | null
-          result_status: Database["public"]["Enums"]["exam_result_status"]
-          title: string
-          type: Database["public"]["Enums"]["exam_type"]
+          status: Database["public"]["Enums"]["EVENT_SIGNUPS_STATUS"]
           updated_at: string
           user_id: string
         }
         Insert: {
-          course_id: number
           created_at?: string
-          date: string
-          description?: string | null
-          excluded_topic_ids?: number[] | null
+          event_id: number
           id?: number
-          passing_percentage?: number
-          result_date?: string | null
-          result_status?: Database["public"]["Enums"]["exam_result_status"]
-          title: string
-          type: Database["public"]["Enums"]["exam_type"]
+          status: Database["public"]["Enums"]["EVENT_SIGNUPS_STATUS"]
           updated_at?: string
           user_id: string
         }
         Update: {
-          course_id?: number
           created_at?: string
-          date?: string
-          description?: string | null
-          excluded_topic_ids?: number[] | null
+          event_id?: number
           id?: number
-          passing_percentage?: number
-          result_date?: string | null
-          result_status?: Database["public"]["Enums"]["exam_result_status"]
-          title?: string
-          type?: Database["public"]["Enums"]["exam_type"]
+          status?: Database["public"]["Enums"]["EVENT_SIGNUPS_STATUS"]
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "tests_course_id_fkey"
-            columns: ["course_id"]
+            foreignKeyName: "event_signups_event_id_fkey"
+            columns: ["event_id"]
             isOneToOne: false
-            referencedRelation: "courses"
+            referencedRelation: "events"
             referencedColumns: ["id"]
           },
         ]
       }
-      topics: {
+      events: {
         Row: {
-          course_id: number
+          created_at: string
+          deduction_points_for_absence: number
+          description: string | null
+          end_date: string
+          event_image: string | null
+          id: number
+          latitude: number
+          location: string
+          longitude: number
+          organization_id: number
+          points_for_participation: number
+          radius_in_km: number
+          required_volunteers: number
+          start_date: string
+          status: Database["public"]["Enums"]["EVENT_STATUS"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deduction_points_for_absence?: number
+          description?: string | null
+          end_date: string
+          event_image?: string | null
+          id?: number
+          latitude: number
+          location: string
+          longitude: number
+          organization_id: number
+          points_for_participation?: number
+          radius_in_km: number
+          required_volunteers: number
+          start_date: string
+          status?: Database["public"]["Enums"]["EVENT_STATUS"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deduction_points_for_absence?: number
+          description?: string | null
+          end_date?: string
+          event_image?: string | null
+          id?: number
+          latitude?: number
+          location?: string
+          longitude?: number
+          organization_id?: number
+          points_for_participation?: number
+          radius_in_km?: number
+          required_volunteers?: number
+          start_date?: string
+          status?: Database["public"]["Enums"]["EVENT_STATUS"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events_categories: {
+        Row: {
+          category_id: number
+          created_at: string
+          event_id: number
+          id: number
+          updated_at: string
+        }
+        Insert: {
+          category_id: number
+          created_at?: string
+          event_id: number
+          id?: number
+          updated_at?: string
+        }
+        Update: {
+          category_id?: number
+          created_at?: string
+          event_id?: number
+          id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "volunteering_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_categories_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events_coordinators: {
+        Row: {
+          coordinator_id: number
+          created_at: string
+          event_id: number
+          id: number
+          updated_at: string
+        }
+        Insert: {
+          coordinator_id: number
+          created_at?: string
+          event_id: number
+          id?: number
+          updated_at?: string
+        }
+        Update: {
+          coordinator_id?: number
+          created_at?: string
+          event_id?: number
+          id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_coordinators_coordinator_id_fkey"
+            columns: ["coordinator_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_coordinators_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations_profiles: {
+        Row: {
           created_at: string
           description: string | null
           id: number
-          status: Database["public"]["Enums"]["topic_progress_status"]
+          status: Database["public"]["Enums"]["ORGANIZATION_STATUS"]
           title: string
+          total_events_organized: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          status?: Database["public"]["Enums"]["ORGANIZATION_STATUS"]
+          title: string
+          total_events_organized?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          status?: Database["public"]["Enums"]["ORGANIZATION_STATUS"]
+          title?: string
+          total_events_organized?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_points: {
+        Row: {
+          created_at: string
+          event_id: number
+          id: number
+          type: Database["public"]["Enums"]["POINTS_TYPE"]
           updated_at: string
           user_id: string
         }
         Insert: {
-          course_id: number
           created_at?: string
-          description?: string | null
+          event_id: number
           id?: number
-          status?: Database["public"]["Enums"]["topic_progress_status"]
-          title: string
+          type: Database["public"]["Enums"]["POINTS_TYPE"]
           updated_at?: string
           user_id: string
         }
         Update: {
-          course_id?: number
           created_at?: string
-          description?: string | null
+          event_id?: number
           id?: number
-          status?: Database["public"]["Enums"]["topic_progress_status"]
-          title?: string
+          type?: Database["public"]["Enums"]["POINTS_TYPE"]
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "topics_course_id_fkey"
-            columns: ["course_id"]
+            foreignKeyName: "user_points_event_id_fkey"
+            columns: ["event_id"]
             isOneToOne: false
-            referencedRelation: "courses"
+            referencedRelation: "events"
             referencedColumns: ["id"]
           },
         ]
       }
       user_profiles: {
         Row: {
+          auth_user_id: string
+          available_dates: string[] | null
+          bio: string | null
           created_at: string
-          full_name: string | null
+          fullname: string | null
+          id: number
+          latitude: number | null
+          longitude: number | null
+          profile_pic: string | null
+          radius_in_km: number | null
+          total_events_attended: number
+          total_volunteering_hours: number
+          total_volunteering_points: number
+          updated_at: string
+        }
+        Insert: {
+          auth_user_id: string
+          available_dates?: string[] | null
+          bio?: string | null
+          created_at?: string
+          fullname?: string | null
+          id?: number
+          latitude?: number | null
+          longitude?: number | null
+          profile_pic?: string | null
+          radius_in_km?: number | null
+          total_events_attended?: number
+          total_volunteering_hours?: number
+          total_volunteering_points?: number
+          updated_at?: string
+        }
+        Update: {
+          auth_user_id?: string
+          available_dates?: string[] | null
+          bio?: string | null
+          created_at?: string
+          fullname?: string | null
+          id?: number
+          latitude?: number | null
+          longitude?: number | null
+          profile_pic?: string | null
+          radius_in_km?: number | null
+          total_events_attended?: number
+          total_volunteering_hours?: number
+          total_volunteering_points?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      users_badges: {
+        Row: {
+          badge_id: number
+          created_at: string
+          id: number
+          user_id: string
+        }
+        Insert: {
+          badge_id: number
+          created_at?: string
+          id?: number
+          user_id: string
+        }
+        Update: {
+          badge_id?: number
+          created_at?: string
+          id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_badges_user_id_fkey1"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
+      }
+      users_categories: {
+        Row: {
+          category_id: number
+          created_at: string
           id: number
           updated_at: string
           user_id: string
         }
         Insert: {
+          category_id: number
           created_at?: string
-          full_name?: string | null
+          id?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category_id?: number
+          created_at?: string
           id?: number
           updated_at?: string
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "users_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "volunteering_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_categories_user_id_fkey1"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
+      }
+      users_organizations: {
+        Row: {
+          created_at: string
+          id: number
+          organization_id: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          organization_id: number
+          updated_at?: string
+          user_id: string
+        }
         Update: {
           created_at?: string
-          full_name?: string | null
           id?: number
+          organization_id?: number
           updated_at?: string
           user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_organizations_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      volunteering_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -195,9 +500,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      exam_result_status: "not_published" | "passed" | "failed"
-      exam_type: "terminal_exam" | "final_exam" | "evaluation_test"
-      topic_progress_status: "not_started" | "in_progress" | "completed"
+      EVENT_SIGNUPS_STATUS:
+        | "pending"
+        | "approved"
+        | "rejected"
+        | "attended"
+        | "absent"
+      EVENT_STATUS: "open" | "closed" | "completed"
+      ORGANIZATION_STATUS: "pending" | "approved" | "rejected" | "suspended"
+      POINTS_TYPE: "participation" | "absence" | "organizing"
     }
     CompositeTypes: {
       [_ in never]: never

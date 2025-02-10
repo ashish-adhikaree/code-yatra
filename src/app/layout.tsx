@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/contexts/theme-context";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -9,10 +10,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
     title: {
-        template: "%s | The Codeblooded",
-        default: "The Codeblooded",
+        template: "%s | Voluntier",
+        default: "Voluntier",
     },
     description: "Developed by the Codeblooded.",
+   
 };
 
 export default function RootLayout({
@@ -22,8 +24,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${inter.className} antialiased h-screen dark`}>
-                <div className="w-full max-w-5xl mx-auto  px-2">{children}</div>
+            <body className={`${inter.className} antialiased h-screen`}>
+                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                    <div className="w-full">{children}</div>
+                </ThemeProvider>
             </body>
         </html>
     );

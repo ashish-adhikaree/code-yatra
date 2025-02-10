@@ -12,7 +12,7 @@ export default function SignupForm() {
     const [state, signupAction] = useActionState(signup, undefined);
 
     return (
-        <Card className="max-h-[70vh] overflow-y-auto">
+        <Card className="overflow-y-auto border-none bg-transparent">
             <CardHeader>
                 <CardTitle>Signup</CardTitle>
                 <CardDescription>Enter your details and create an account.</CardDescription>
@@ -66,7 +66,7 @@ export default function SignupForm() {
                     {state?.generalErrorMessage && <p className="text-red-500 text-xs">{state.generalErrorMessage}</p>}
                 </CardContent>
                 <CardFooter className="flex-col items-stretch">
-                    <p className="text-xs pb-2">
+                    <p className="text-sm text-muted-foreground pb-2">
                         Already have an account?{" "}
                         <Link className="underline" href="/login">
                             Login
