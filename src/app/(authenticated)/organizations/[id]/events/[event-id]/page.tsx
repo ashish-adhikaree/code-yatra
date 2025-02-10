@@ -94,12 +94,12 @@ export default async function Page({
                         </div>
                     ) : null}
                 </div>
-                <div>
+                <div className="space-y-3">
                     <p className="text-muted-foreground text-sm">
                         {format(event.start_date, "do MMM yyyy, hh:mm b")} to{" "}
                         {format(event.end_date, "do MMM yyyy, hh:mm b")}
                     </p>
-                    <h1 className="text-lg font-medium">{event.title}</h1>
+                    <h1 className="text-lg font-medium text-primary">{event.title}</h1>
                     <p className="text-muted-foreground max-w-lg">{event.description}</p>
                     <div className="flex items-center gap-2 text-muted-foreground w-fit py-2">
                         <MapPin className="h-6 w-6" />
