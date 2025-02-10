@@ -175,6 +175,7 @@ export async function applyToEvent(state: ApplyToEventFormState, formData: FormD
             .from("event_signups")
             .select("*")
             .eq("user_id", user.id)
+            .eq("event_id", id)
             .maybeSingle();
 
         if (user_signup_error) {
