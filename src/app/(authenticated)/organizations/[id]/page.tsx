@@ -76,8 +76,8 @@ export default async function Page({
                     <ArrowLeft className="h-6 w-6" />
                     <p>Back</p>
                 </Link>
-                <div className="flex items-center gap-2 justify-between">
-                    <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-2 justify-between flex-wrap">
+                    <div className="flex items-center gap-2">
                         {isAuthor ? <OrganizationStatus>{organization.status}</OrganizationStatus> : null}
                         {organization.total_events_organized != 0 && (
                             <span className="px-2 py-[2px] border rounded-md text-xs leading-none uppercase bg-secondary">
@@ -86,7 +86,7 @@ export default async function Page({
                         )}
                     </div>
                     {isAuthor ? (
-                        <div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex items-center gap-2">
                             <CreateOrganizationDialog organization={organization}>
                                 <Button size="icon" variant="ghost">
                                     <PencilIcon />

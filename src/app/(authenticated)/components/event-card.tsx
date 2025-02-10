@@ -61,7 +61,7 @@ export default function EventCard({ event, isAuthor }: { event: Event; isAuthor?
                     <Link href={`/organizations/${event.organization_id}`} className="text-sm">{event.organizations_profiles.title}</Link>
                 </div>
                 <p className="text-sm text-muted-foreground">{event.description}</p>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                     {categories.map((category) => (
                         <span
                             key={category}

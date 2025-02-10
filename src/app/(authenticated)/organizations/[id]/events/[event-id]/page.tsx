@@ -147,7 +147,7 @@ export default async function Page({
                         </DialogContent>
                     </Dialog>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                     {categories.map((category) => (
                         <span
                             key={category}
