@@ -23,22 +23,22 @@ export default async function Podium() {
     const thirdRank = users[2];
 
     return (
-        <div className="container mx-auto flex flex-col items-center justify-center">
+        <div className="max-w-container flex flex-col items-center justify-center">
             <div className="w-full flex flex-col justify-center items-center gap-10">
-                <div className="flex flex-row justify-center place-items-center gap-16 mt-20">
+                <div className="flex flex-row justify-center place-items-center md:gap-16 mt-4 md:mt-20">
                     <div className="flex flex-col justify-center items-center gap-4">
                         <div className="flex flex-col justify-center items-center">
                             <TrophyIcon size={42} className="text-gray-400" />
-                            <div className="flex flex-col justify-center items-center pt-5">
-                                <h4>{secondRank.fullname}</h4>
-                                <div className="flex items-center flex-wrap gap-1 text-muted-foreground pt-3">
+                            <div className="flex flex-col justify-center items-center pt-5 text-center">
+                                <h4>{secondRank.fullname || "Anonymous"}</h4>
+                                <div className="flex items-center flex-wrap gap-1 text-muted-foreground pt-3 justify-center">
                                     <p className="">{secondRank.total_volunteering_points}pts</p>|
                                     <p>{secondRank.total_volunteering_hours}hrs</p>|{" "}
                                     <p>{secondRank.total_events_attended} events</p>
                                 </div>
                             </div>
                         </div>
-                        <div className="rounded-md min-h-72 min-w-32 backdrop-blur-3xl flex flex-row justify-center items-center bg-gradient-to-b from-gray-400 to-transparent">
+                        <div className="rounded-md min-h-72 max-w-32 w-[25vw] backdrop-blur-3xl flex flex-row justify-center items-center bg-gradient-to-b from-gray-400 to-transparent">
                             <p className="text-5xl">
                                 2<span className="text-base">nd</span>
                             </p>
@@ -48,9 +48,9 @@ export default async function Podium() {
                     <div className="flex flex-col justify-center items-center gap-4">
                         <div className="flex flex-col justify-center items-center">
                             <TrophyIcon size={42} className="text-yellow-400" />
-                            <div className="flex flex-col justify-center items-center pt-5">
-                                <h4>{firstRank.fullname}</h4>
-                                <div className="flex items-center flex-wrap gap-1 text-muted-foreground pt-3">
+                            <div className="flex flex-col justify-center items-center pt-5 text-center">
+                                <h4>{firstRank.fullname || "Anonymous"}</h4>
+                                <div className="flex items-center flex-wrap gap-1 text-muted-foreground pt-3 justify-center">
                                     <p className="">{firstRank.total_volunteering_points}pts</p>|
                                     <p>{firstRank.total_volunteering_hours}hrs</p>|{" "}
                                     <p>{firstRank.total_events_attended} events</p>
@@ -58,7 +58,7 @@ export default async function Podium() {
                             </div>
                         </div>
 
-                        <div className="rounded-md min-h-96 min-w-32 backdrop-blur-3xl flex flex-row justify-center items-center bg-gradient-to-b from-yellow-400 to-transparent">
+                        <div className="rounded-md min-h-96 max-w-32 w-[25vw] backdrop-blur-3xl flex flex-row justify-center items-center bg-gradient-to-b from-yellow-400 to-transparent">
                             <p className="text-5xl">
                                 1<span className="text-base">st</span>
                             </p>
@@ -69,16 +69,16 @@ export default async function Podium() {
                         <div className="flex flex-col justify-center items-center gap-4">
                             <div className="flex flex-col justify-center items-center">
                                 <TrophyIcon size={42} className="text-amber-600" />
-                                <div className="flex flex-col justify-center items-center pt-5">
-                                    <h4>{thirdRank.fullname}</h4>
-                                    <div className="flex items-center flex-wrap gap-1 text-muted-foreground pt-3">
+                                <div className="flex flex-col justify-center items-center pt-5 text-center">
+                                    <h4>{thirdRank.fullname || "Anonymous"}</h4>
+                                    <div className="flex items-center flex-wrap gap-1 text-muted-foreground pt-3 justify-center">
                                         <p className="">{thirdRank.total_volunteering_points}pts</p>|
                                         <p>{thirdRank.total_volunteering_hours}hrs</p>|{" "}
                                         <p>{thirdRank.total_events_attended} events</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="rounded-md min-h-60 min-w-32 backdrop-blur-3xl flex flex-row justify-center items-center bg-gradient-to-b from-amber-600 to-transparent">
+                            <div className="rounded-md min-h-60 max-w-32 w-[25vw] backdrop-blur-3xl flex flex-row justify-center items-center bg-gradient-to-b from-amber-600 to-transparent">
                                 <p className="text-5xl">
                                     3<span className="text-base">rd</span>
                                 </p>
