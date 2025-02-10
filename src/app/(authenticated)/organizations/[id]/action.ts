@@ -1,6 +1,6 @@
 "use server";
 
-import { CreateEventState } from "@/lib/interface";
+import { ApplyToEventFormState, CreateEventState } from "@/lib/interface";
 import { createClient } from "@/lib/utils/supabase/server";
 import { CreateEventSchema } from "@/lib/zod-schemas/event";
 import { revalidatePath } from "next/cache";
@@ -26,6 +26,8 @@ export async function createEvent(state: CreateEventState, formData: FormData) {
             organization_id: parseInt(formData.get("organization_id") as string),
             location: formData.get("location"),
             status: formData.get("status"),
+            points_for_participation: formData.get("points_for_participation") as string,
+            deduction_points_for_absence: formData.get("deduction_points_for_absence") as string,
         });
 
         if (!validatedFields.success) {
@@ -79,7 +81,7 @@ export async function createEvent(state: CreateEventState, formData: FormData) {
 
         return {
             success: true,
-            eventId: event.id
+            eventId: event.id,
         };
     } catch (err: any) {
         console.log(err);
@@ -90,68 +92,67 @@ export async function createEvent(state: CreateEventState, formData: FormData) {
     }
 }
 
-// export async function updateOrganization(
-//     state: CreateOrganizationState,
-//     formData: FormData
-// ): Promise<{
-//     generalErrorMessage?: string;
-//     payload?: FormData;
-//     success?: boolean;
-//     errors?: { title?: string[]; description?: string[] };
-// }> {
-//     try {
-//         const supabase = await createClient();
-//         const {
-//             data: { user },
-//         } = await supabase.auth.getUser();
-//         const validatedFields = CreateOrganizationSchema.safeParse({
-//             title: formData.get("title"),
-//             description: formData.get("description"),
-//         });
+export async function deleteEvent(id: number) {
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase.from("events").delete().eq("id", id);
+        if (error) {
+            throw error;
+        }
+        revalidatePath("/", "layout");
+        redirect("/organizations");
+    } catch (err) {
+        console.log(err);
+    }
+}
 
-//         if (!validatedFields.success) {
-//             return {
-//                 errors: validatedFields.error.flatten().fieldErrors,
-//                 payload: formData,
-//             };
-//         }
+export async function applyToEvent(state: ApplyToEventFormState, formData: FormData) {
+    try {
+        const supabase = await createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return redirect("/login");
 
-//         if (!user) return redirect("/login");
+        const id = parseInt(formData.get("event_id") as string);
 
-//         const { error } = await supabase
-//             .from("organizations_profiles")
-//             .update({
-//                 title: validatedFields.data.title,
-//                 ...(validatedFields.data.description ? { description: validatedFields.data.description } : {}),
-//             })
-//             .eq("id", parseInt(formData.get("id") as string));
+        const { data: user_signup, error: user_signup_error } = await supabase
+            .from("event_signups")
+            .select("*")
+            .eq("user_id", user.id)
+            .maybeSingle();
 
-//         if (error) {
-//             throw error;
-//         }
+        if (user_signup_error) {
+            throw user_signup_error;
+        }
 
-//         return {
-//             success: true,
-//         };
-//     } catch (err: any) {
-//         console.log(err);
-//         return {
-//             generalErrorMessage: err.message || "Something went wrong. Please try again.",
-//             payload: formData,
-//         };
-//     }
-// }
+        if (user_signup) {
+            return {
+                success: false,
+                generalErrorMessage:
+                    user_signup.status == "pending"
+                        ? "You have already applied to this event"
+                        : user_signup.status == "rejected"
+                        ? "Sorry, you haven't been selected this time. Don't feel demotivated, there are plenty of opportunities waiting for you"
+                        : "You have already been accepted to this event",
+            };
+        }
 
-// export async function deleteOrganization(id: number) {
-//     try {
-//         const supabase = await createClient();
-//         const { data, error } = await supabase.from("organizations_profiles").delete().eq("id", id);
-//         if (error) {
-//             throw error;
-//         }
-//         revalidatePath("/", "layout");
-//         redirect("/organizations");
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
+        const { error } = await supabase.from("event_signups").insert({
+            user_id: user.id,
+            event_id: id,
+            status: "pending",
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        revalidatePath("/", "layout");
+    } catch (err: any) {
+        console.log(err);
+        return {
+            generalErrorMessage: err.message || "Something went wrong. Please try again.",
+        };
+    }
+}

@@ -20,11 +20,11 @@ export default async function Podium() {
     .order("total_volunteering_points", { ascending: false });
 
   if (user_errors) {
-    <ErrorBanner type="error">Something went wrong!</ErrorBanner>;
+    return <ErrorBanner type="error">Something went wrong!</ErrorBanner>;
   }
 
   if (!user || user.length === 0 || user===null) {
-    <ErrorBanner type="warning">Failed to fetch the user</ErrorBanner>;
+    return <ErrorBanner type="warning">Failed to fetch the user</ErrorBanner>;
   }
   const secondRank = user[1];
   const firstRank = user[0];
@@ -43,7 +43,7 @@ export default async function Podium() {
             {/* Second Place */}
             <div className="flex flex-col justify-center items-center gap-4">
             <div className="flex flex-col justify-center items-center">
-                <TrophyIcon size={42} />
+                <TrophyIcon size={42} className="text-gray-400" />
                 <div className="flex flex-col justify-center items-center pt-5">
                 <h4>{secondRank.fullname}</h4>
                 <p>{secondRank.total_volunteering_hours} points</p>
@@ -62,7 +62,7 @@ export default async function Podium() {
             {/* First Place */}
             <div className="flex flex-col justify-center items-center gap-4">
             <div className="flex flex-col justify-center items-center">
-                <TrophyIcon size={42} />
+                <TrophyIcon size={42} className="text-yellow-600" />
                 <div className="flex flex-col justify-center items-center pt-5">
                 <h4>{firstRank.fullname}</h4>
                 <p>{firstRank.total_volunteering_hours} points</p>
@@ -82,7 +82,7 @@ export default async function Podium() {
             {/* Third Place */}
             <div className="flex flex-col justify-center items-center gap-4">
             <div className="flex flex-col justify-center items-center">
-                <TrophyIcon size={42} />
+                <TrophyIcon size={42} className="text-amber-800"/>
                 <div className="flex flex-col justify-center items-center pt-5">
                 <h4>{ThirdRank?.fullname !== undefined ? ThirdRank?.fullname : "No user Found!"}</h4>
                 <p>{ThirdRank?.total_volunteering_points !== undefined ? ThirdRank?.total_volunteering_points : null} points</p>

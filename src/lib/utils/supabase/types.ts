@@ -39,6 +39,8 @@ export type Database = {
           created_at: string
           description: string
           id: number
+          required_events_participation: number
+          required_points: number
           title: string
           updated_at: string | null
         }
@@ -46,6 +48,8 @@ export type Database = {
           created_at?: string
           description: string
           id?: number
+          required_events_participation: number
+          required_points: number
           title: string
           updated_at?: string | null
         }
@@ -53,48 +57,12 @@ export type Database = {
           created_at?: string
           description?: string
           id?: number
+          required_events_participation?: number
+          required_points?: number
           title?: string
           updated_at?: string | null
         }
         Relationships: []
-      }
-      event_points: {
-        Row: {
-          created_at: string
-          description: string | null
-          event_id: number | null
-          id: number
-          points: number
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          event_id?: number | null
-          id?: number
-          points?: number
-          title: string
-          updated_at: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          event_id?: number | null
-          id?: number
-          points?: number
-          title?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "event_points_event_id_fkey"
-            columns: ["event_id"]
-            isOneToOne: false
-            referencedRelation: "events"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       event_signups: {
         Row: {
@@ -103,7 +71,7 @@ export type Database = {
           id: number
           status: Database["public"]["Enums"]["EVENT_SIGNUPS_STATUS"]
           updated_at: string
-          user_id: number
+          user_id: string
         }
         Insert: {
           created_at?: string
@@ -111,7 +79,7 @@ export type Database = {
           id?: number
           status: Database["public"]["Enums"]["EVENT_SIGNUPS_STATUS"]
           updated_at?: string
-          user_id: number
+          user_id: string
         }
         Update: {
           created_at?: string
@@ -119,7 +87,7 @@ export type Database = {
           id?: number
           status?: Database["public"]["Enums"]["EVENT_SIGNUPS_STATUS"]
           updated_at?: string
-          user_id?: number
+          user_id?: string
         }
         Relationships: [
           {
@@ -129,18 +97,12 @@ export type Database = {
             referencedRelation: "events"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "event_signups_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       events: {
         Row: {
           created_at: string
+          deduction_points_for_absence: number
           description: string | null
           end_date: string
           id: number
@@ -148,6 +110,7 @@ export type Database = {
           location: string
           longitude: number
           organization_id: number
+          points_for_participation: number
           radius_in_km: number
           required_volunteers: number
           start_date: string
@@ -157,6 +120,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          deduction_points_for_absence?: number
           description?: string | null
           end_date: string
           id?: number
@@ -164,6 +128,7 @@ export type Database = {
           location: string
           longitude: number
           organization_id: number
+          points_for_participation?: number
           radius_in_km: number
           required_volunteers: number
           start_date: string
@@ -173,6 +138,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          deduction_points_for_absence?: number
           description?: string | null
           end_date?: string
           id?: number
@@ -180,6 +146,7 @@ export type Database = {
           location?: string
           longitude?: number
           organization_id?: number
+          points_for_participation?: number
           radius_in_km?: number
           required_volunteers?: number
           start_date?: string
@@ -308,31 +275,34 @@ export type Database = {
       user_points: {
         Row: {
           created_at: string
+          event_id: number
           id: number
-          points_id: number
+          type: Database["public"]["Enums"]["POINTS_TYPE"]
           updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          event_id: number
           id?: number
-          points_id: number
+          type: Database["public"]["Enums"]["POINTS_TYPE"]
           updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          event_id?: number
           id?: number
-          points_id?: number
+          type?: Database["public"]["Enums"]["POINTS_TYPE"]
           updated_at?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "user_points_points_id_fkey"
-            columns: ["points_id"]
+            foreignKeyName: "user_points_event_id_fkey"
+            columns: ["event_id"]
             isOneToOne: false
-            referencedRelation: "event_points"
+            referencedRelation: "events"
             referencedColumns: ["id"]
           },
         ]
@@ -510,9 +480,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      EVENT_SIGNUPS_STATUS: "pending" | "approved" | "rejected"
+      EVENT_SIGNUPS_STATUS:
+        | "pending"
+        | "approved"
+        | "rejected"
+        | "attended"
+        | "absent"
       EVENT_STATUS: "open" | "closed" | "completed"
       ORGANIZATION_STATUS: "pending" | "approved" | "rejected" | "suspended"
+      POINTS_TYPE: "participation" | "absence" | "organizing"
     }
     CompositeTypes: {
       [_ in never]: never

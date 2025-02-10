@@ -29,6 +29,17 @@ export type CreateOrganizationState =
       }
     | undefined;
 
+export type ApplyToEventFormState =
+    | {
+          success?: boolean;
+          errors?: {
+              title?: string[];
+              description?: string[];
+          };
+          generalErrorMessage?: string;
+      }
+    | undefined;
+
 export type CreateEventState =
     | {
           success?: boolean;
@@ -42,21 +53,22 @@ export type CreateEventState =
               longitude?: string[];
               radius_in_km?: string[];
               categories?: string[];
+              participation_points?: string[];
+              deduction_points_for_absence?: string[];
           };
           generalErrorMessage?: string;
       }
     | undefined;
 
-
- export type EditProfileState =
+export type EditProfileState =
     | {
           success?: boolean;
           errors?: {
               fullname?: string[];
-              latitude?:number;
-              longitude?:number;
-              bio?:string|null;
-              radius_in_km:number;
+              latitude?: number;
+              longitude?: number;
+              bio?: string | null;
+              radius_in_km: number;
           };
           generalErrorMessage?: string;
       }

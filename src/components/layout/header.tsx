@@ -28,7 +28,6 @@ const NAVLINKS = [
         url: "/leaderboard",
         icon: Trophy,
     },
-  
 ];
 
 export default function Header({ user }: { user: User | null }) {
@@ -36,7 +35,9 @@ export default function Header({ user }: { user: User | null }) {
     const pathName = usePathname();
     return (
         <header className="max-w-container flex items-center justify-between gap-4 border-b">
-            <Link href="/">Logo</Link>
+            <Link href="/">
+                <Logo />
+            </Link>
             <div className="flex items-center">
                 {NAVLINKS.map(({ label, url, icon: Icon }, index) => (
                     <TooltipProvider key={index}>
@@ -45,7 +46,10 @@ export default function Header({ user }: { user: User | null }) {
                                 <Link
                                     href={url}
                                     key={index}
-                                    className={cn("px-6 py-4 hover:bg-muted/50 border-b-[3px] border-transparent", pathName == url ? "text-primary border-b-primary" : "")}
+                                    className={cn(
+                                        "px-6 py-4 hover:bg-muted/50 border-b-[3px] border-transparent",
+                                        pathName == url ? "text-primary border-b-primary" : ""
+                                    )}
                                 >
                                     <Icon />
                                 </Link>

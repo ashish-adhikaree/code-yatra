@@ -122,7 +122,7 @@ const EventFormMap = ({ radiusInKm }: { radiusInKm: number }) => {
 
             const circle = L.circle([coordinates.latitude, coordinates.longitude], {
                 radius: radiusInKm * 1000,
-                fillColor: "red",
+                fillColor: "green",
                 interactive: false,
                 stroke: false,
                 bubblingMouseEvents: false,
