@@ -29,8 +29,6 @@ export default function CreateEventForm({
         }
     }, [state]);
 
-    
-
     return (
         <form action={createEventAction} className="space-y-6">
             <div>
@@ -94,6 +92,32 @@ export default function CreateEventForm({
                         />
                         {state?.errors?.required_volunteers && (
                             <p className="text-red-500 text-xs">{state.errors.required_volunteers}</p>
+                        )}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="points_for_participation">Points for participation*</Label>
+                        <Input
+                            type="number"
+                            id="points_for_participation"
+                            name="points_for_participation"
+                            defaultValue={state?.payload?.get("points_for_participation") as string}
+                            required
+                        />
+                        {state?.errors?.points_for_participation && (
+                            <p className="text-red-500 text-xs">{state.errors.points_for_participation}</p>
+                        )}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="deduction_points_for_absence">Deduction points for absence*</Label>
+                        <Input
+                            type="number"
+                            id="deduction_points_for_absence"
+                            name="deduction_points_for_absence"
+                            defaultValue={state?.payload?.get("deduction_points_for_absence") as string}
+                            required
+                        />
+                        {state?.errors?.deduction_points_for_absence && (
+                            <p className="text-red-500 text-xs">{state.errors.deduction_points_for_absence}</p>
                         )}
                     </div>
 

@@ -13,4 +13,26 @@ export const CreateEventSchema = z.object({
     organization_id: z.number().int().positive(),
     location: z.string().nonempty(),
     status: z.enum(["open", "closed", "completed"]),
+    points_for_participation: z.string().transform((val, ctx) => {
+        const parsedValue = parseInt(val);
+        if (isNaN(parsedValue)) return 0;
+        if (parsedValue < 0 && parsedValue > 100) {
+            return ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Participation points should be between 0 and 100",
+            });
+        }
+        return parsedValue;
+    }),
+    deduction_points_for_absence: z.string().transform((val, ctx) => {
+        const parsedValue = parseInt(val);
+        if (isNaN(parsedValue)) return 0;
+        if (parsedValue < 0 && parsedValue > 100) {
+            return ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Deduction points for absence should be between 0 and 100",
+            });
+        }
+        return parsedValue;
+    }),
 });

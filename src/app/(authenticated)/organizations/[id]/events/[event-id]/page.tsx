@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import EventsLocation from "../components/events-locations";
+import ApplyToEvent from "../components/apply-event-banner";
 
 export async function getOrganizationDetails(params: { id: string; supabaseClient?: SupabaseClient<Database> }) {
     const supabase = params.supabaseClient || (await createClient());
@@ -53,9 +54,18 @@ export default async function Page({
 }) {
     const parsedSearchParams = getParsedPaginationParams(await searchParams) ?? { page: 0, size: 10 };
     const supabase = await createClient();
+    const {
+        data: { user: loggedInUser },
+        error: userError,
+    } = await supabase.auth.getUser();
+    if (userError || !loggedInUser) {
+        return redirect("/login");
+    }
     const { data: event, error } = await supabase
         .from("events")
-        .select("*, events_categories(category_id(title))")
+        .select(
+            "*, events_categories(category_id(title)), organizations_profiles(id,title, users_organizations(user_id))"
+        )
         .eq("id", parseInt((await params)["event-id"]))
         .maybeSingle();
 
@@ -78,8 +88,8 @@ export default async function Page({
 
     const categories = event.events_categories.map((category) => category.category_id.title);
 
-    // const isAuthor = organization.users_organizations.some((user) => user.user_id === loggedInUser.id);
-    const isAuthor = true;
+    const isAuthor = event.organizations_profiles.users_organizations.some((user) => user.user_id === loggedInUser.id);
+
     return (
         <div className="max-w-container space-y-4">
             <div className="space-y-2">
@@ -115,7 +125,9 @@ export default async function Page({
                     </div>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button variant="link" className="px-0">View exact location</Button>
+                            <Button variant="link" className="px-0">
+                                View exact location
+                            </Button>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
@@ -145,7 +157,10 @@ export default async function Page({
                         </span>
                     ))}
                 </div>
-                {/* <ParticipantsList organization={event} searchParams={parsedSearchParams} /> */}
+                <ApplyToEvent eventId={event.id} status={event.status} />
+                {isAuthor && 
+                <ParticipantsList event={event} searchParams={parsedSearchParams} />
+            }
             </div>
         </div>
     );

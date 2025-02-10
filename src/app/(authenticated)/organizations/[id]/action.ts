@@ -1,6 +1,6 @@
 "use server";
 
-import { CreateEventState } from "@/lib/interface";
+import { ApplyToEventFormState, CreateEventState } from "@/lib/interface";
 import { createClient } from "@/lib/utils/supabase/server";
 import { CreateEventSchema } from "@/lib/zod-schemas/event";
 import { revalidatePath } from "next/cache";
@@ -26,6 +26,8 @@ export async function createEvent(state: CreateEventState, formData: FormData) {
             organization_id: parseInt(formData.get("organization_id") as string),
             location: formData.get("location"),
             status: formData.get("status"),
+            points_for_participation: formData.get("points_for_participation") as string,
+            deduction_points_for_absence: formData.get("deduction_points_for_absence") as string,
         });
 
         if (!validatedFields.success) {
@@ -101,5 +103,56 @@ export async function deleteEvent(id: number) {
         redirect("/organizations");
     } catch (err) {
         console.log(err);
+    }
+}
+
+export async function applyToEvent(state: ApplyToEventFormState, formData: FormData) {
+    try {
+        const supabase = await createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return redirect("/login");
+
+        const id = parseInt(formData.get("event_id") as string);
+
+        const { data: user_signup, error: user_signup_error } = await supabase
+            .from("event_signups")
+            .select("*")
+            .eq("user_id", user.id)
+            .maybeSingle();
+
+        if (user_signup_error) {
+            throw user_signup_error;
+        }
+
+        if (user_signup) {
+            return {
+                success: false,
+                generalErrorMessage:
+                    user_signup.status == "pending"
+                        ? "You have already applied to this event"
+                        : user_signup.status == "rejected"
+                        ? "Sorry, you haven't been selected this time. Don't feel demotivated, there are plenty of opportunities waiting for you"
+                        : "You have already been accepted to this event",
+            };
+        }
+
+        const { error } = await supabase.from("event_signups").insert({
+            user_id: user.id,
+            event_id: id,
+            status: "pending",
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        revalidatePath("/", "layout");
+    } catch (err: any) {
+        console.log(err);
+        return {
+            generalErrorMessage: err.message || "Something went wrong. Please try again.",
+        };
     }
 }

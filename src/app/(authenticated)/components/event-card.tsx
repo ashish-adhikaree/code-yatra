@@ -30,12 +30,16 @@ interface Event extends Tables<"events"> {
             title: string;
         };
     }[];
+    organizations_profiles: {
+        id: number;
+        title: string;
+    };
 }
 
 export default function EventCard({ event, isAuthor }: { event: Event; isAuthor?: boolean }) {
     const categories = event.events_categories.map((category) => category.category_id.title);
     return (
-        <Link href={`/organizations/${event.organization_id}/events/${event.id}`}>
+        <Link className="block" href={`/organizations/${event.organization_id}/events/${event.id}`}>
             <article className="w-full bg-muted/40 p-4 rounded-md border border-foreground/10 space-y-4">
                 <div className="flex items-center gap-2 justify-between flex-wrap">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -53,7 +57,8 @@ export default function EventCard({ event, isAuthor }: { event: Event; isAuthor?
                         {format(event.start_date, "do MMM yyyy, hh:mm b")} to{" "}
                         {format(event.end_date, "do MMM yyyy, hh:mm b")}
                     </p>
-                    <h5 className="text-lg font-medium">{event.title}</h5>
+                    <h5 className="text-lg font-medium text-primary">{event.title}</h5>
+                    <Link href={`/organizations/${event.organization_id}`} className="text-sm">{event.organizations_profiles.title}</Link>
                 </div>
                 <p className="text-sm text-muted-foreground">{event.description}</p>
                 <div className="flex gap-2">

@@ -16,7 +16,7 @@ export default async function OrganizationEventsList({
     const supabase = await createClient();
     const { data: events, error } = await supabase
         .from("events")
-        .select("*, events_categories(category_id(title))")
+        .select("*, events_categories(category_id(title)), organizations_profiles(id,title)")
         .eq("organization_id", organization.id)
         .range(searchParams.page * searchParams.size, (searchParams.page + 1) * searchParams.size - 1)
         .order("created_at", { ascending: false });

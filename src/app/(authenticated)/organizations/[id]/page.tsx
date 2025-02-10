@@ -119,7 +119,11 @@ export default async function Page({
                     <h1 className="text-lg font-medium">{organization.title}</h1>
                     <p className="text-muted-foreground max-w-lg">{organization.description}</p>
                 </div>
-                <OrganizationEventsList isAuthor={isAuthor} organization={organization} searchParams={parsedSearchParams}/>
+                <OrganizationEventsList
+                    isAuthor={isAuthor}
+                    organization={organization}
+                    searchParams={parsedSearchParams}
+                />
             </div>
         </div>
     );
